@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
 const PlanoAlimentarSchema = new mongoose.Schema({
+	user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // referência ao usuário
 	dieta: { type: String, required: true },
 	imc: { type: Number, required: true },
 	classificacaoImc: { type: String, required: true },
-	tmb: { type: Number, required: true }, // Taxa Metabólica Basal
+	tmb: { type: Number, required: true },
 	caloriasDiarias: { type: Number, required: true },
-	consumoAguaDiario: { type: String, required: true }, // ex: '2.5 litros'
-
+	consumoAguaDiario: { type: String, required: true },
 	refeicoes: {
 		cafeDaManha: { type: String, required: true },
 		lancheDaManha: { type: String, required: true },
@@ -16,12 +16,10 @@ const PlanoAlimentarSchema = new mongoose.Schema({
 		jantar: { type: String, required: true },
 		ceia: { type: String, required: true },
 	},
-
 	recomendacoes: { type: [String], required: true },
 	alimentosAEvitar: { type: [String], required: true },
-},
-	{
-		timestamps: true
-	});
+}, {
+	timestamps: true
+});
 
 module.exports = mongoose.model('PlanoAlimentar', PlanoAlimentarSchema);

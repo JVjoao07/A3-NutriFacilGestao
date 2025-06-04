@@ -50,7 +50,6 @@ exports.login = async (req, res) => {
 	}
 };
 
-
 exports.getAll = async (req, res) => {
 	try {
 		const users = await User.find().select('-senha'); // Oculta a senha
@@ -77,5 +76,23 @@ exports.refreshToken = (req, res) => {
 	});
 };
 
+exports.getUserWithDieta = async (req, res) => {
+	try {
+		const { userId } = req.params; // exemplo: pega id da URL
+
+		const user = await User.findById(userId).populate('dieta').exec();
+
+		if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
+
+		// Retorna o usuário e o plano alimentar completo
+		res.json({
+			nome: user.nome,
+			email: user.email,
+			dieta: user.dieta // aqui vem o objeto do plano alimentar populado
+		});
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+};
 
 

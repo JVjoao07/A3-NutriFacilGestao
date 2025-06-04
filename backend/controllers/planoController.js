@@ -1,8 +1,9 @@
 const PlanoAlimentar = require('../models/planoAlimentar');
+const User = require('../models/user');
 
 exports.criarPlano = async (req, res) => {
+
 	try {
-		// req.body deve conter exatamente as chaves do schema
 		const {
 			dieta,
 			imc,
@@ -15,7 +16,7 @@ exports.criarPlano = async (req, res) => {
 			alimentosAEvitar
 		} = req.body;
 
-		// Validação simples (pode melhorar com bibliotecas tipo Joi ou Yup)
+		// Validação simples
 		if (!dieta || !imc || !classificacaoImc || !tmb || !caloriasDiarias || !consumoAguaDiario) {
 			return res.status(400).json({ error: 'Campos básicos obrigatórios faltando.' });
 		}
@@ -28,8 +29,12 @@ exports.criarPlano = async (req, res) => {
 			return res.status(400).json({ error: 'Recomendações e alimentos a evitar devem ser arrays.' });
 		}
 
-		// Criar novo plano alimentar
+		// Aqui vem o ID do usuário autenticado, assumindo que middleware setou em req.user.id
+		const userId = req.user.id;
+
+		// Criar novo plano alimentar já associado ao usuário
 		const plano = new PlanoAlimentar({
+			user: userId, // associando o plano ao usuário
 			dieta,
 			imc,
 			classificacaoImc,
@@ -42,6 +47,7 @@ exports.criarPlano = async (req, res) => {
 		});
 
 		await plano.save();
+		await User.findByIdAndUpdate(userId, { dieta: plano._id });
 
 		res.status(201).json(plano);
 
