@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/Login.css'; // Importa o CSS
 
 function Login() {
@@ -31,9 +31,19 @@ function Login() {
 		}
 	}
 
+
 	return (
 		<form onSubmit={handleSubmit}>
+
 			<h2>Login</h2>
+
+			<p style={{ textAlign: 'center', marginBottom: '20px' }}>
+				Não tem uma conta?{' '}
+				<Link to="/register" style={{ color: '#4a90e2', textDecoration: 'none' }}>
+					Registre aqui
+				</Link>
+			</p>
+
 			{erro && <p className="error">{erro}</p>}
 
 			<label>Email:</label>
