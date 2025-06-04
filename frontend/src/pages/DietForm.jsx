@@ -35,10 +35,30 @@ export default function DietForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErro("");
-    // Mostra o resultado mesmo sem conexão
+
+    // Junte todas as alergias em um array
+    const alergiasTodas = [
+      ...form.alergias,
+      ...form.outras_alergias
+        .toLowerCase()
+        .split(/[ ,;]+/)
+        .filter(Boolean)
+    ];
+
+    // Função para filtrar alimentos conforme alergias
+    function filtrar(lista, restricoes) {
+      return lista.filter(item => !restricoes.some(alergia => item.includes(alergia)));
+    }
+
+    // Filtra cada grupo alimentar
+    const proteinasPermitidas = filtrar(form.proteinas, alergiasTodas);
+    const vegetaisPermitidos = filtrar(form.vegetais, alergiasTodas);
+    const verdurasPermitidas = filtrar(form.verduras, alergiasTodas);
+    const carboidratosPermitidos = filtrar(form.carboidratos, alergiasTodas);
+    const frutasPermitidas = filtrar(form.frutas, alergiasTodas);
+
     setResultado({
-      mensagem: "Plano alimentar gerado (exemplo local)",
+      mensagem: "Plano alimentar gerado considerando suas alergias e preferências.",
       plano: {
         calorias: 2000,
         imc: 22.5,
@@ -46,12 +66,20 @@ export default function DietForm() {
         recomendacoes: [
           "Coma mais vegetais",
           "Beba 2 litros de água por dia",
-          "Evite frituras"
-        ],
+          "Evite frituras",
+          alergiasTodas.length > 0 ? `Evite alimentos: ${alergiasTodas.join(", ")}` : null
+        ].filter(Boolean),
         exemploRefeicao: {
-          cafe: "Ovos mexidos + pão integral + fruta",
-          almoco: "Arroz, feijão, frango grelhado, salada",
-          jantar: "Sopa de legumes + fruta"
+          cafe: proteinasPermitidas[0]
+            ? `Proteína: ${proteinasPermitidas[0]}, Fruta: ${frutasPermitidas[0] || "à sua escolha"}`
+            : "Fruta e pão integral",
+          almoco: [
+            carboidratosPermitidos[0] || "Arroz",
+            vegetaisPermitidos[0] || "Legumes",
+            proteinasPermitidas[0] || "Proteína à sua escolha",
+            verdurasPermitidas[0] || "Salada"
+          ].join(", "),
+          jantar: "Sopa de legumes" + (proteinasPermitidas[1] ? ` e ${proteinasPermitidas[1]}` : "")
         }
       }
     });
@@ -70,9 +98,9 @@ export default function DietForm() {
     proteinas: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=60",
     vegetais: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&auto=format&fit=crop&q=60",
     verduras: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&auto=format&fit=crop&q=60",
-    carboidratos: "https://unsplash.com/pt-br/fotografias/pao-integral-no-prato-preto-eH7B2b5cCUg",
+    carboidratos: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&auto=format&fit=crop&q=60", // NOVA imagem: arroz, pão e batata (funcional)
     frutas: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400&auto=format&fit=crop&q=60",
-    alergias: "https://unsplash.com/pt-br/fotografias/um-sinal-em-forma-de-triangulo-em-uma-parede-amarela-VO5w2Ida70s",
+    alergias: "https://cdn-icons-png.flaticon.com/512/564/564619.png", // Símbolo de cuidado/alerta (amarelo)
   };
 
   // Card style para categorias
@@ -467,21 +495,86 @@ export default function DietForm() {
             marginBottom: 28,
             marginTop: 8
           }}>
-            <h4 style={{ color: "#f9a825", fontSize: 22, marginBottom: 14, fontWeight: 700, letterSpacing: 1 }}>
+            <h4 style={{
+              color: "#f9a825",
+              fontSize: 22,
+              marginBottom: 18,
+              fontWeight: 700,
+              letterSpacing: 1,
+              display: "flex",
+              alignItems: "center",
+              gap: 8
+            }}>
               <span role="img" aria-label="Refeição">🥗</span> Exemplo de Refeições
             </h4>
-            <div style={{ display: "flex", gap: 32, flexWrap: "wrap", justifyContent: "center" }}>
-              <div style={{ flex: 1, minWidth: 180, marginBottom: 12 }}>
-                <b style={{ color: "#2d8659" }}>Café da manhã:</b>
-                <div style={{ fontSize: 17 }}>{resultado.plano.exemploRefeicao.cafe}</div>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+              gap: 28,
+              justifyContent: "center"
+            }}>
+              {/* Café da manhã */}
+              <div style={{
+                background: "#fff",
+                borderRadius: 14,
+                boxShadow: "0 1px 6px #0001",
+                padding: 20,
+                minHeight: 180,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
+              }}>
+                <div style={{ fontSize: 36, marginBottom: 8 }}>🍞</div>
+                <b style={{ color: "#2d8659", fontSize: 18, marginBottom: 6 }}>Café da manhã</b>
+                <div style={{ fontSize: 16, marginBottom: 10, textAlign: "center" }}>{resultado.plano.exemploRefeicao.cafe}</div>
+                <details style={{ marginTop: "auto", width: "100%" }}>
+                  <summary style={{ cursor: "pointer", color: "#f9a825", fontWeight: 600 }}>Ver Receita</summary>
+                  <div style={{ marginTop: 6, fontSize: 15, color: "#444" }}>
+                    Bata 2 ovos com uma pitada de sal, cozinhe em frigideira antiaderente. Sirva com 1 fatia de pão integral e 1 fruta de sua preferência.
+                  </div>
+                </details>
               </div>
-              <div style={{ flex: 1, minWidth: 180, marginBottom: 12 }}>
-                <b style={{ color: "#2d8659" }}>Almoço:</b>
-                <div style={{ fontSize: 17 }}>{resultado.plano.exemploRefeicao.almoco}</div>
+              {/* Almoço */}
+              <div style={{
+                background: "#fff",
+                borderRadius: 14,
+                boxShadow: "0 1px 6px #0001",
+                padding: 20,
+                minHeight: 180,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
+              }}>
+                <div style={{ fontSize: 36, marginBottom: 8 }}>🍽️</div>
+                <b style={{ color: "#2d8659", fontSize: 18, marginBottom: 6 }}>Almoço</b>
+                <div style={{ fontSize: 16, marginBottom: 10, textAlign: "center" }}>{resultado.plano.exemploRefeicao.almoco}</div>
+                <details style={{ marginTop: "auto", width: "100%" }}>
+                  <summary style={{ cursor: "pointer", color: "#f9a825", fontWeight: 600 }}>Ver Receita</summary>
+                  <div style={{ marginTop: 6, fontSize: 15, color: "#444" }}>
+                    Cozinhe arroz e legumes no vapor. Grelhe a proteína escolhida. Monte o prato com salada fresca e tempere com azeite.
+                  </div>
+                </details>
               </div>
-              <div style={{ flex: 1, minWidth: 180, marginBottom: 12 }}>
-                <b style={{ color: "#2d8659" }}>Jantar:</b>
-                <div style={{ fontSize: 17 }}>{resultado.plano.exemploRefeicao.jantar}</div>
+              {/* Jantar */}
+              <div style={{
+                background: "#fff",
+                borderRadius: 14,
+                boxShadow: "0 1px 6px #0001",
+                padding: 20,
+                minHeight: 180,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center"
+              }}>
+                <div style={{ fontSize: 36, marginBottom: 8 }}>🌙</div>
+                <b style={{ color: "#2d8659", fontSize: 18, marginBottom: 6 }}>Jantar</b>
+                <div style={{ fontSize: 16, marginBottom: 10, textAlign: "center" }}>{resultado.plano.exemploRefeicao.jantar}</div>
+                <details style={{ marginTop: "auto", width: "100%" }}>
+                  <summary style={{ cursor: "pointer", color: "#f9a825", fontWeight: 600 }}>Ver Receita</summary>
+                  <div style={{ marginTop: 6, fontSize: 15, color: "#444" }}>
+                    Cozinhe legumes variados em água com temperos naturais até ficarem macios. Sirva quente, acompanhado de uma proteína leve se desejar.
+                  </div>
+                </details>
               </div>
             </div>
           </div>
