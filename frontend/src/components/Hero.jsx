@@ -7,7 +7,7 @@ function Hero() {
 			<div className="hero-content">
 				<h1>Transforme sua vida com NutriFácil</h1>
 				<p>Descubra o plano alimentar perfeito para você</p>
-				<a href="#dietas" className="btn">Conheça Nossas Dietas</a>
+				<a href="/fazer-dieta" className="btn">Faça sua dieta agora</a>
 			</div>
 		</section>
 	);

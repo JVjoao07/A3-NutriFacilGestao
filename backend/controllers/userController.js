@@ -34,7 +34,7 @@ exports.login = async (req, res) => {
 		if (!valid) return res.status(400).json({ message: 'Senha incorreta!' });
 
 		// Gera access token
-		const accessToken = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '15m' });
+		const accessToken = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '1d' });
 
 		// Gera refresh token
 		const refreshToken = jwt.sign({ id: user._id, email: user.email }, JWT_REFRESH_SECRET, { expiresIn: '7d' });

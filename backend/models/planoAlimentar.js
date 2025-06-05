@@ -9,12 +9,8 @@ const PlanoAlimentarSchema = new mongoose.Schema({
 	caloriasDiarias: { type: Number, required: true },
 	consumoAguaDiario: { type: String, required: true },
 	refeicoes: {
-		cafeDaManha: { type: String, required: true },
-		lancheDaManha: { type: String, required: true },
-		almoco: { type: String, required: true },
-		lancheDaTarde: { type: String, required: true },
-		jantar: { type: String, required: true },
-		ceia: { type: String, required: true },
+		type: [String], // array de strings
+		required: true
 	},
 	recomendacoes: { type: [String], required: true },
 	alimentosAEvitar: { type: [String], required: true },
