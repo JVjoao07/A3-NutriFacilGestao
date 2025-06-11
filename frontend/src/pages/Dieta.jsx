@@ -51,28 +51,32 @@ function Dieta() {
 				{planoAlimentar ? (
 					<div className="dieta-card">
 						<h2 className="dieta-title">Sua Dieta</h2>
-						<p><strong>Dieta:</strong> {planoAlimentar.dieta}</p>
-						<p><strong>IMC:</strong> {planoAlimentar.imc} ({planoAlimentar.classificacaoImc})</p>
-						<p><strong>TMB:</strong> {planoAlimentar.tmb} kcal</p>
-						<p><strong>Calorias Diárias:</strong> {planoAlimentar.caloriasDiarias} kcal</p>
-						<p><strong>Consumo de água diário:</strong> {planoAlimentar.consumoAguaDiario}</p>
+						<div className="dieta-info">
+							<p><strong>Dieta:</strong> {planoAlimentar.dieta}</p>
+							<p><strong>IMC:</strong> {planoAlimentar.imc} ({planoAlimentar.classificacaoImc})</p>
+							<p><strong>TMB:</strong> {planoAlimentar.tmb} kcal</p>
+							<p><strong>Calorias Diárias:</strong> {planoAlimentar.caloriasDiarias} kcal</p>
+							<p><strong>Consumo de água diário:</strong> {planoAlimentar.consumoAguaDiario}</p>
+						</div>
 
-						<h3 className="dieta-subtitle">Refeições:</h3>
-						<ul>
-							{planoAlimentar.refeicoes.map((refeicao, index) => (
-								<li key={index}>{refeicao}</li>
+						<h3 className="dieta-subtitle">Refeições</h3>
+						<ul className="dieta-list">
+							{planoAlimentar.refeicoes.map(({ refeicao, itens }, index) => (
+								<li key={index}>
+									<strong>{refeicao.charAt(0).toUpperCase() + refeicao.slice(1)}:</strong> {itens.join(", ")}
+								</li>
 							))}
 						</ul>
 
-						<h3 className="dieta-subtitle">Recomendações:</h3>
-						<ul>
+						<h3 className="dieta-subtitle">Recomendações</h3>
+						<ul className="dieta-list">
 							{planoAlimentar.recomendacoes.map((rec, index) => (
 								<li key={index}>{rec}</li>
 							))}
 						</ul>
 
-						<h3 className="dieta-subtitle">Alimentos a evitar:</h3>
-						<ul>
+						<h3 className="dieta-subtitle">Alimentos a evitar</h3>
+						<ul className="dieta-list">
 							{planoAlimentar.alimentosAEvitar.map((alimento, index) => (
 								<li key={index}>{alimento}</li>
 							))}
@@ -82,10 +86,7 @@ function Dieta() {
 					<div className="dieta-card">
 						<h2 className="dieta-title">Nenhuma dieta encontrada</h2>
 						<p>Você ainda não possui uma dieta cadastrada.</p>
-						<button
-							onClick={handleCriarDieta}
-							className="dieta-button"
-						>
+						<button onClick={handleCriarDieta} className="dieta-button">
 							Fazer Minha Dieta
 						</button>
 					</div>

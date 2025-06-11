@@ -1,0 +1,12 @@
+.sairBtn {
+	margin: 0;
+	padding: 0;
+	background-color: #fff;
+	color: rgb(0, 0, 0);
+	transition: 0.3s;
+}
+
+.sairBtn:hover {
+	background-color: #fff;
+	color: rgb(165, 165, 165);
+}

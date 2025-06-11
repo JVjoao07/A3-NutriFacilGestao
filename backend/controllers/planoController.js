@@ -1,7 +1,9 @@
-const PlanoAlimentar = require('../models/planoAlimentar');
+const { PlanoAlimentar } = require('../models/planoAlimentar');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const { gerarPlanoAlimentar } = require('../services/geradorDeReceitas');
 
+// retirar
 exports.criarPlano = async (req, res) => {
 
 	console.log(req.body)
@@ -85,5 +87,29 @@ exports.getPlanoAlimentar = async (req, res) => {
 	} catch (error) {
 		console.error('Erro ao buscar plano alimentar:', error);
 		return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+	}
+};
+
+// 
+exports.criarPlano2 = async (req, res) => {
+	try {
+		const planoGerado = gerarPlanoAlimentar(req.body);
+		const userId = req.user.id;
+
+		// Criar documento para salvar no banco
+		const plano = new PlanoAlimentar({
+			user: userId,
+			...planoGerado
+		});
+
+		await plano.save();
+
+		// Atualizar o usuário com o ID do novo plano
+		await User.findByIdAndUpdate(userId, { planos: plano._id });
+
+		res.status(200).json(plano);
+	} catch (err) {
+		console.error(err);
+		res.status(500).json({ erro: 'Erro ao gerar plano' });
 	}
 };

@@ -1,6 +1,24 @@
 import { useState } from 'react';
 import Header from "../components/Header";
 import "../styles/FazerDieta.css";
+import { fetchWithRefresh } from '../utils/fetchWithRefresh'
+
+const proteinasOptions = [
+	'peixe', 'frango', 'ovo', 'tofu', 'atum', 'camarão',
+	'carne bovina', 'grão de bico', 'feijão', 'lentilha', 'queijo'
+];
+
+const vegetaisOptions = [
+	'brócolis', 'berinjela', 'tomate', 'pimentão', 'abobrinha', 'cenoura', 'couve-flor'
+];
+
+const verdurasOptions = ['alface', 'rúcula', 'espinafre', 'couve', 'agrião'];
+
+const carboidratosOptions = ['arroz integral', 'batata doce', 'quinoa', 'macarrão', 'batata'];
+
+const frutasOptions = ['laranja', 'mamão', 'morango', 'banana', 'abacate', 'maçã', 'uva', 'manga'];
+
+const oleaginosasOptions = ['azeite', 'castanhas', 'nozes', 'amêndoas'];
 
 function FazerDieta() {
 	const [formData, setFormData] = useState({
@@ -15,6 +33,7 @@ function FazerDieta() {
 		verduras: [],
 		carboidratos: [],
 		frutas: [],
+		oleaginosas: [],
 		alergias: [],
 		outrasAlergias: ''
 	});
@@ -29,8 +48,6 @@ function FazerDieta() {
 					? [...prev[name], value]
 					: prev[name].filter(item => item !== value)
 			}));
-		} else if (type === 'radio') {
-			setFormData(prev => ({ ...prev, [name]: value }));
 		} else {
 			setFormData(prev => ({ ...prev, [name]: value }));
 		}
@@ -39,108 +56,42 @@ function FazerDieta() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const { peso, altura, idade, sexo, dieta, objetivo, alergias = [], outrasAlergias = '' } = formData;
-
-		// Cálculo de IMC
-		const alturaM = altura / 100;
-		const imc = (peso / (alturaM ** 2)).toFixed(2);
-
-		let classificacaoImc = '';
-		if (imc < 18.5) classificacaoImc = 'Abaixo do peso';
-		else if (imc < 25) classificacaoImc = 'Peso normal';
-		else if (imc < 30) classificacaoImc = 'Sobrepeso';
-		else classificacaoImc = 'Obesidade';
-
-		// Cálculo de TMB (Mifflin-St Jeor)
-		let tmb = 10 * peso + 6.25 * altura - 5 * idade;
-		tmb += (sexo === 'masculino') ? 5 : -161;
-
-		// Ajuste de calorias conforme objetivo
-		let caloriasDiarias = tmb;
-		if (objetivo === 'emagrecimento') caloriasDiarias -= 500;
-		else if (objetivo === 'hipertrofia') caloriasDiarias += 500;
-
-		caloriasDiarias = Math.round(caloriasDiarias);
-
-		// Consumo de água (35 ml por kg)
-		const consumoAguaDiario = Math.round(peso * 35);
-
-		// Refeições (modelo simplificado)
-		const refeicoes = [
-			'Café da manhã: proteínas, carboidratos, frutas',
-			'Almoço: proteínas, vegetais, carboidratos',
-			'Jantar: proteínas, vegetais',
-			'Lanches: frutas, oleaginosas'
-		];
-
-		// Recomendacoes detalhadas
-		const recomendacoes = [];
-
-		// Recomendacoes baseadas no objetivo
-		switch (objetivo) {
-			case 'emagrecimento':
-				recomendacoes.push('Manter um déficit calórico moderado e evitar alimentos ultraprocessados.');
-				break;
-			case 'hipertrofia':
-				recomendacoes.push('Priorizar a ingestão adequada de proteínas e manter um superávit calórico.');
-				break;
-			case 'manutencao':
-				recomendacoes.push('Manter uma dieta equilibrada, focando em qualidade nutricional.');
-				break;
-			case 'saude':
-				recomendacoes.push('Priorizar alimentos naturais e reduzir o consumo de açúcares e gorduras saturadas.');
-				break;
-		}
-
-		// Recomendacoes baseadas no IMC
-		if (imc < 18.5) {
-			recomendacoes.push('Ganhar peso de forma saudável, priorizando proteínas e carboidratos complexos.');
-		} else if (imc >= 25) {
-			recomendacoes.push('Reduzir a ingestão calórica e aumentar a prática de atividades físicas.');
-		}
-
-		// Alimentos a evitar
-		const alimentosAEvitar = [...alergias];
-		if (outrasAlergias) alimentosAEvitar.push(outrasAlergias);
-
-		// Modelo para enviar
-		const planoAlimentar = {
-			dieta,
-			imc,
-			classificacaoImc,
-			tmb: Math.round(tmb),
-			caloriasDiarias,
-			consumoAguaDiario,
-			refeicoes,
-			recomendacoes,
-			alimentosAEvitar
+		const dataToSend = {
+			peso: Number(formData.peso),
+			altura: Number(formData.altura),
+			idade: Number(formData.idade),
+			sexo: formData.sexo,
+			dieta: formData.dieta,
+			objetivo: formData.objetivo,
+			proteinas: formData.proteinas,
+			vegetais: formData.vegetais,
+			verduras: formData.verduras,
+			carboidratos: formData.carboidratos,
+			frutas: formData.frutas,
+			oleaginosas: formData.oleaginosas,
+			alergias: formData.alergias,
+			outrasAlergias: formData.outrasAlergias
 		};
 
-		console.log('Plano gerado:', planoAlimentar);
-
-		// Envio para o backend usando fetch
 		try {
 			const token = localStorage.getItem('accessToken');
-			const response = await fetch('http://localhost:3000/api/planos', {
+			const response = await fetchWithRefresh('http://localhost:3000/api/plano', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 					'Authorization': `Bearer ${token}`
 				},
-				body: JSON.stringify(planoAlimentar)
+				body: JSON.stringify(dataToSend)
 			});
 
-			if (!response.ok) {
-				throw new Error('Erro ao enviar plano alimentar');
-			}
+			if (!response.ok) throw new Error('Erro ao enviar plano alimentar');
 
-			const data = await response.json();
-			console.log('Plano enviado com sucesso:', data);
+			const result = await response.json();
+			console.log('Plano recebido do backend:', result);
 		} catch (error) {
 			console.error('Erro no envio:', error);
 		}
 	};
-
 
 	const renderCheckboxes = (category, options) => (
 		options.map(opt => (
@@ -164,8 +115,11 @@ function FazerDieta() {
 				<h2>Seu Plano Alimentar Personalizado</h2>
 
 				<div className="dietas-intro">
-					<img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=60"
-						alt="Variedade de alimentos saudáveis" className="dietas-img" />
+					<img
+						src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=60"
+						alt="Variedade de alimentos saudáveis"
+						className="dietas-img"
+					/>
 					<p>Personalize seu plano alimentar de acordo com suas preferências e necessidades</p>
 				</div>
 
@@ -239,24 +193,65 @@ function FazerDieta() {
 						<p>Selecione seus alimentos preferidos em cada categoria</p>
 
 						<div className="food-preferences-grid">
-							{[
-								{ name: 'proteinas', icon: '🍗', img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400', options: ['frango', 'peixe', 'carne-vermelha', 'ovos', 'tofu'] },
-								{ name: 'vegetais', icon: '🥕', img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400', options: ['cenoura', 'brocolis', 'abobrinha', 'berinjela', 'pimentao'] },
-								{ name: 'verduras', icon: '🌿', img: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400', options: ['alface', 'espinafre', 'rucula', 'couve', 'agriao'] },
-								{ name: 'carboidratos', icon: '🍞', img: 'https://i0.wp.com/manipulacao.drogasil.com.br/wp-content/uploads/2024/07/alimentos-ricos-em-carboidrato.jpeg?fit=5824%2C3264&ssl=1', options: ['arroz', 'batata', 'macarrao', 'quinoa', 'batata-doce'] },
-								{ name: 'frutas', icon: '🍎', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400', options: ['maca', 'banana', 'laranja', 'morango', 'uva', 'manga'] }
-							].map(cat => (
-								<div key={cat.name} className="food-category-card">
-									<div className="card-header">
-										<span>{cat.icon}</span>
-										<h4>{cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}</h4>
-									</div>
-									<div className="card-content">
-										<img src={cat.img} alt={cat.name} className="category-img" />
-										{renderCheckboxes(cat.name, cat.options)}
-									</div>
+							<div className="food-category-card">
+								<div className="card-header">
+									<span>🍗</span>
+									<h4>Proteínas</h4>
 								</div>
-							))}
+								<div className="card-content">
+									{renderCheckboxes('proteinas', proteinasOptions)}
+								</div>
+							</div>
+
+							<div className="food-category-card">
+								<div className="card-header">
+									<span>🥕</span>
+									<h4>Vegetais</h4>
+								</div>
+								<div className="card-content">
+									{renderCheckboxes('vegetais', vegetaisOptions)}
+								</div>
+							</div>
+
+							<div className="food-category-card">
+								<div className="card-header">
+									<span>🌿</span>
+									<h4>Verduras</h4>
+								</div>
+								<div className="card-content">
+									{renderCheckboxes('verduras', verdurasOptions)}
+								</div>
+							</div>
+
+							<div className="food-category-card">
+								<div className="card-header">
+									<span>🍞</span>
+									<h4>Carboidratos</h4>
+								</div>
+								<div className="card-content">
+									{renderCheckboxes('carboidratos', carboidratosOptions)}
+								</div>
+							</div>
+
+							<div className="food-category-card">
+								<div className="card-header">
+									<span>🍎</span>
+									<h4>Frutas</h4>
+								</div>
+								<div className="card-content">
+									{renderCheckboxes('frutas', frutasOptions)}
+								</div>
+							</div>
+
+							<div className="food-category-card">
+								<div className="card-header">
+									<span>🥜</span>
+									<h4>Oleaginosas</h4>
+								</div>
+								<div className="card-content">
+									{renderCheckboxes('oleaginosas', oleaginosasOptions)}
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -271,7 +266,7 @@ function FazerDieta() {
 									<h4>Alergias</h4>
 								</div>
 								<div className="card-content">
-									{renderCheckboxes('alergias', ['lactose', 'gluten', 'leite', 'ovo', 'frutos_mar', 'amendoim', 'soja', 'nenhuma'])}
+									{renderCheckboxes('alergias', ['lactose', 'gluten', 'leite', 'ovo', 'frutos_do_mar', 'amendoim', 'soja', 'nenhuma'])}
 									<div className="form-group outras-alergias">
 										<label>Outras Alergias ou Intolerâncias:</label>
 										<input
