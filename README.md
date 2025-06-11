@@ -56,7 +56,11 @@ mvn test
 - Usabilidade: Avaliada através de testes com usuários reais
 
 ## 👥 Equipe
-[Lista de integrantes do grupo]
+JOÃO VICTOR ALVES RA:422142090
+ANA CAMILA
+HUGO ALMEIDA
+HERBET
+ITALORESENDE
 
 ## 📅 Cronograma
 - Data de Entrega: 18/06/25
