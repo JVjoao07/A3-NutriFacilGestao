@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="NutriFácil - Descubra o plano alimentar perfeito para sua saúde. Oferecemos dietas personalizadas como Mediterrânea, Low Carb, Cetogênica e Vegetariana.">
+    <meta name="keywords" content="dieta, nutrição, saúde, alimentação saudável, plano alimentar">
+    <title>NutriFácil - Sua Jornada para uma Vida Mais Saudável</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <a href="#inicio" class="skip-link">Pular para o conteúdo principal</a>
+    <header>
+        <nav aria-label="Menu principal">
+            <div class="logo" role="banner">
+                <svg class="logo-svg" viewBox="0 0 200 50" aria-label="NutriFácil Logo">
+                    <!-- Folha estilizada -->
+                    <path class="logo-leaf" d="M30 10 C40 5, 45 15, 40 25 C35 35, 25 35, 20 25 C15 15, 20 5, 30 10 Z"
+                        fill="#2ecc71" />
+                    <!-- Círculo do prato -->
+                    <circle class="logo-plate" cx="30" cy="25" r="15" fill="none" stroke="#2ecc71" stroke-width="2" />
+                    <!-- Texto NutriFácil -->
+                    <text class="logo-text" x="55" y="30" fill="#2c3e50">NutriFácil</text>
+                </svg>
+            </div>
+            <ul class="menu" role="menubar">
+                <li role="none"><a href="#inicio" role="menuitem">Início</a></li>
+                <li role="none"><a href="#dietas" role="menuitem">Dietas</a></li>
+                <li role="none"><a href="#sobre" role="menuitem">Sobre</a></li>
+                <li role="none"><a href="#contato" role="menuitem">Contato</a></li>
+            </ul>
+            <button class="menu-mobile" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">☰</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="inicio" class="hero" aria-label="Introdução">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1>Transforme sua vida com NutriFácil</h1>
+                <p>Descubra o plano alimentar perfeito para você</p>
+                <a href="#dietas" class="btn">Conheça Nossas Dietas</a>
+            </div>
+        </section>
+
+        <section id="dietas" class="dietas" aria-label="Plano alimentar personalizado">
+            <h2>Seu Plano Alimentar Personalizado</h2>
+            <div class="dietas-intro">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&auto=format&fit=crop&q=60"
+                    alt="Variedade de alimentos saudáveis" class="dietas-img">
+                <p>Personalize seu plano alimentar de acordo com suas preferências e necessidades</p>
+            </div>
+            <form id="plano-form" class="plano-form" aria-label="Formulário de plano alimentar">
+                <div class="form-section">
+                    <h3>Informações Pessoais</h3>
+                    <div class="form-group">
+                        <label for="peso">Peso (kg):</label>
+                        <input type="number" id="peso" name="peso" min="30" max="300" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="altura">Altura (cm):</label>
+                        <input type="number" id="altura" name="altura" min="100" max="250" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="idade">Idade (anos):</label>
+                        <input type="number" id="idade" name="idade" min="12" max="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Sexo:</label>
+                        <div class="radio-group">
+                            <label>
+                                <input type="radio" name="sexo" value="masculino" required>
+                                Masculino
+                            </label>
+                            <label>
+                                <input type="radio" name="sexo" value="feminino" required>
+                                Feminino
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Objetivos e Preferências</h3>
+                    <div class="form-group">
+                        <label for="objetivo">Objetivo Principal:</label>
+                        <select id="objetivo" name="objetivo" required>
+                            <option value="">Selecione seu objetivo</option>
+                            <option value="emagrecimento">Emagrecimento</option>
+                            <option value="hipertrofia">Hipertrofia</option>
+                            <option value="manutencao">Manutenção do Peso</option>
+                            <option value="saude">Melhoria da Saúde</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dieta">Tipo de Dieta:</label>
+                        <select id="dieta" name="dieta" required>
+                            <option value="">Selecione a dieta</option>
+                            <option value="mediterranea">Mediterrânea</option>
+                            <option value="low-carb">Low Carb</option>
+                            <option value="cetogenica">Cetogênica</option>
+                            <option value="vegetariana">Vegetariana</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Preferências Alimentares</h3>
+                    <p class="section-description">Selecione seus alimentos preferidos em cada categoria</p>
+
+                    <div class="food-preferences-grid">
+                        <!-- Proteínas -->
+                        <div class="food-category-card">
+                            <div class="card-header">
+                                <i class="fas fa-drumstick-bite"></i>
+                                <h4>Proteínas</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="food-image">
+                                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=60"
+                                        alt="Fontes de proteína variadas" class="category-img">
+                                </div>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="proteinas" value="frango">
+                                    <span>Frango</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="proteinas" value="peixe">
+                                    <span>Peixe</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="proteinas" value="carne-vermelha">
+                                    <span>Carne Vermelha</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="proteinas" value="ovos">
+                                    <span>Ovos</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="proteinas" value="tofu">
+                                    <span>Proteína Vegetal</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Legumes -->
+                        <div class="food-category-card">
+                            <div class="card-header">
+                                <i class="fas fa-carrot"></i>
+                                <h4>Legumes</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="food-image">
+                                    <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&auto=format&fit=crop&q=60"
+                                        alt="Legumes frescos" class="category-img">
+                                </div>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="vegetais" value="cenoura">
+                                    <span>Cenoura</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="vegetais" value="brocolis">
+                                    <span>Brócolis</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="vegetais" value="abobrinha">
+                                    <span>Abobrinha</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="vegetais" value="berinjela">
+                                    <span>Berinjela</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="vegetais" value="pimentao">
+                                    <span>Pimentão</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Verduras -->
+                        <div class="food-category-card">
+                            <div class="card-header">
+                                <i class="fas fa-leaf"></i>
+                                <h4>Verduras</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="food-image">
+                                    <img src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&auto=format&fit=crop&q=60"
+                                        alt="Verduras frescas" class="category-img">
+                                </div>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="verduras" value="alface">
+                                    <span>Alface</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="verduras" value="espinafre">
+                                    <span>Espinafre</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="verduras" value="rucula">
+                                    <span>Rúcula</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="verduras" value="couve">
+                                    <span>Couve</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="verduras" value="agriao">
+                                    <span>Agrião</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Carboidratos -->
+                        <div class="food-category-card">
+                            <div class="card-header">
+                                <i class="fas fa-bread-slice"></i>
+                                <h4>Carboidratos</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="food-image">
+                                    <img src="https://images.unsplash.com/photo-1608198093002-ad4e505484ba?w=400&auto=format&fit=crop&q=60"
+                                        alt="Fontes de carboidratos" class="category-img">
+                                </div>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="carboidratos" value="arroz">
+                                    <span>Arroz</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="carboidratos" value="batata">
+                                    <span>Batata</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="carboidratos" value="macarrao">
+                                    <span>Macarrão</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="carboidratos" value="quinoa">
+                                    <span>Quinoa</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="carboidratos" value="batata-doce">
+                                    <span>Batata Doce</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Frutas -->
+                        <div class="food-category-card">
+                            <div class="card-header">
+                                <i class="fas fa-apple-alt"></i>
+                                <h4>Frutas</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="food-image">
+                                    <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400&auto=format&fit=crop&q=60"
+                                        alt="Variedade de frutas" class="category-img">
+                                </div>
+                                <div class="fruits-table">
+                                    <table class="fruits-grid">
+                                        <tr>
+                                            <td>
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" name="frutas" value="maca">
+                                                    <span>Maçã</span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" name="frutas" value="banana">
+                                                    <span>Banana</span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" name="frutas" value="laranja">
+                                                    <span>Laranja</span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" name="frutas" value="morango">
+                                                    <span>Morango</span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" name="frutas" value="uva">
+                                                    <span>Uva</span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label class="checkbox-label">
+                                                    <input type="checkbox" name="frutas" value="manga">
+                                                    <span>Manga</span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Alergias e Intolerâncias</h3>
+                    <p class="section-description">Selecione quaisquer alergias ou intolerâncias alimentares que você
+                        possui</p>
+
+                    <div class="food-preferences-grid">
+                        <div class="food-category-card alergias-card">
+                            <div class="card-header">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h4>Alergias e Intolerâncias</h4>
+                            </div>
+                            <div class="card-content">
+                                <div class="food-image">
+                                    <img src="https://images.unsplash.com/photo-1574482628011-938afe6673a4?w=400&auto=format&fit=crop&q=60"
+                                        alt="Símbolos de alerta para alergias" class="category-img">
+                                </div>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alergias" value="lactose">
+                                    <span>Lactose</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alergias" value="gluten">
+                                    <span>Glúten</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alergias" value="leite">
+                                    <span>Proteína do Leite</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alergias" value="ovo">
+                                    <span>Ovo</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alergias" value="frutos_mar">
+                                    <span>Frutos do Mar</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alergias" value="amendoim">
+                                    <span>Amendoim</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alergias" value="soja">
+                                    <span>Soja</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="alergias" value="nenhuma">
+                                    <span>Nenhuma</span>
+                                </label>
+                                <div class="form-group outras-alergias">
+                                    <label for="outras-alergias">Outras Alergias ou Intolerâncias:</label>
+                                    <input type="text" id="outras-alergias" name="outras_alergias"
+                                        placeholder="Digite outras alergias ou intolerâncias">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Gerar Plano Alimentar</button>
+            </form>
+
+            <div id="resultado-plano" class="resultado-plano" hidden>
+                <h3>Seu Plano Alimentar Personalizado</h3>
+                <div id="plano-detalhes"></div>
+            </div>
+        </section>
+
+        <section id="sobre" class="sobre" aria-label="Sobre nós">
+            <div class="container">
+                <h2>Sobre o NutriFácil</h2>
+                <div class="sobre-content">
+                    <div class="sobre-texto">
+                        <div class="sobre-image">
+                            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800&auto=format&fit=crop&q=60"
+                                alt="Nutricionista preparando refeição saudável" class="sobre-img">
+                        </div>
+                        <p>O NutriFácil nasceu da necessidade de tornar a alimentação saudável mais acessível e prática
+                            para todos. Nossa missão é ajudar pessoas a alcançarem seus objetivos de saúde através de
+                            planos alimentares personalizados e sustentáveis.</p>
+                        <p>Nossa equipe é composta por nutricionistas experientes e apaixonados por saúde e bem-estar,
+                            prontos para guiar você em sua jornada rumo a uma vida mais saudável.</p>
+                    </div>
+                    <div class="sobre-valores">
+                        <h3>Nossos Valores</h3>
+                        <ul>
+                            <li>Compromisso com a saúde</li>
+                            <li>Personalização dos planos</li>
+                            <li>Base científica</li>
+                            <li>Sustentabilidade</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contato" class="contato" aria-label="Contato">
+            <div class="container">
+                <h2>Entre em Contato</h2>
+                <div class="contato-content">
+                    <div class="contato-image">
+                        <img src="https://images.unsplash.com/photo-1577563908411-5077b6dc7624?w=800&auto=format&fit=crop&q=60"
+                            alt="Nutricionista atendendo cliente" class="contato-img">
+                    </div>
+                    <form class="contato-form" aria-label="Formulário de contato">
+                        <div class="form-group">
+                            <label for="nome">Nome:</label>
+                            <input type="text" id="nome" name="nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="mensagem">Mensagem:</label>
+                            <textarea id="mensagem" name="mensagem" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Enviar Mensagem</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <div id="modal" class="modal" role="dialog" aria-labelledby="modal-titulo" aria-modal="true">
+            <div class="modal-content">
+                <button class="fechar" aria-label="Fechar modal">&times;</button>
+                <h2 id="modal-titulo"></h2>
+                <p id="modal-descricao"></p>
+                <div class="modal-detalhes">
+                    <h3>Benefícios:</h3>
+                    <ul id="modal-beneficios"></ul>
+                    <h3>Alimentos Recomendados:</h3>
+                    <ul id="modal-alimentos"></ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 NutriFácil. Todos os direitos reservados.</p>
+            <button id="voltar-topo" class="btn-voltar-topo" aria-label="Voltar ao topo">↑</button>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

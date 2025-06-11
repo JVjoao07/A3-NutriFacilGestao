@@ -1,0 +1,68 @@
+/* src/styles/Login.css */
+
+form {
+	max-width: 400px;
+	margin: 80px auto;
+	padding: 30px 25px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	background-color: #f9f9f9;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+form h2 {
+	text-align: center;
+	margin-bottom: 20px;
+	color: #333;
+}
+
+label {
+	display: block;
+	margin-bottom: 6px;
+	font-weight: 600;
+	color: #555;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+	width: 100%;
+	padding: 10px 12px;
+	margin-bottom: 18px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 1rem;
+	transition: border-color 0.3s ease;
+}
+
+input[type="text"],
+input[type="email"]:focus,
+input[type="password"]:focus {
+	border-color: #4a90e2;
+	outline: none;
+}
+
+button {
+	width: 100%;
+	padding: 12px 0;
+	background-color: #2ecc71;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	font-weight: 700;
+	font-size: 1.1rem;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+button:hover {
+	background-color: #27ae60;
+}
+
+p.error {
+	color: #d93025;
+	font-weight: 600;
+	margin-bottom: 12px;
+	text-align: center;
+}
