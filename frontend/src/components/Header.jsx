@@ -26,9 +26,7 @@ function Header() {
 
 				<ul className="menu" role="menubar">
 					<li role="none"><a href="/" role="menuitem">Início</a></li>
-					<li role="none"><a href="/dieta" role="menuitem">Dieta</a></li>
-					<li role="none"><a href="#sobre" role="menuitem">Sobre</a></li>
-					<li role="none"><a href="#contato" role="menuitem">Contato</a></li>
+					<li role="none"><a href="/dieta" role="menuitem">Minha Dieta</a></li>
 					{isLoggedIn && (
 						<li role="none">
 							<button className='sairBtn' onClick={handleLogout} role="menuitem">

@@ -6,7 +6,11 @@ const refeicaoSchema = new mongoose.Schema({
 		enum: ['cafe', 'almoco', 'jantar', 'lanche'],
 		required: true
 	},
-	itens: [{ type: String, required: true }]
+	nome: { type: String }, // ex: "Panqueca de Aveia"
+	descricao: { type: String }, // ex: "Ideal para começar o dia com energia"
+	itens: [{ type: String, required: true }],
+	calorias: { type: Number } // somatório dos ingredientes
+
 }, { _id: false });
 
 const PlanoAlimentarSchema = new mongoose.Schema({
@@ -27,6 +31,7 @@ const PlanoAlimentarSchema = new mongoose.Schema({
 	timestamps: true
 });
 
+// altura em centímetros
 function calcularIMC(peso, altura) {
 	const alturaM = altura / 100;
 	const imc = (peso / (alturaM ** 2)).toFixed(2);

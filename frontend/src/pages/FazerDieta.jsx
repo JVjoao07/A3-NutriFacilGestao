@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from "../components/Header";
 import "../styles/FazerDieta.css";
 import { fetchWithRefresh } from '../utils/fetchWithRefresh'
+import { useNavigate } from 'react-router-dom';
 
 const proteinasOptions = [
 	'peixe', 'frango', 'ovo', 'tofu', 'atum', 'camarão',
@@ -37,6 +38,34 @@ function FazerDieta() {
 		alergias: [],
 		outrasAlergias: ''
 	});
+
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		const verificarPlano = async () => {
+			try {
+				const token = localStorage.getItem('accessToken');
+				const response = await fetchWithRefresh('http://localhost:3000/api/plano', {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${token}`
+					}
+				});
+
+				if (response.ok) {
+					const plano = await response.json();
+					if (plano) {
+						navigate('/dieta');
+					}
+				}
+			} catch (error) {
+				console.error('Erro ao verificar plano:', error);
+			}
+		};
+
+		verificarPlano();
+	}, [navigate]);
 
 	const handleInputChange = (e) => {
 		const { name, value, type, checked } = e.target;
@@ -87,6 +116,7 @@ function FazerDieta() {
 			if (!response.ok) throw new Error('Erro ao enviar plano alimentar');
 
 			const result = await response.json();
+			navigate("/dieta")
 			console.log('Plano recebido do backend:', result);
 		} catch (error) {
 			console.error('Erro no envio:', error);

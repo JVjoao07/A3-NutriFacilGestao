@@ -2,11 +2,13 @@
 	margin: 0;
 	padding: 0;
 	background-color: #fff;
-	color: rgb(0, 0, 0);
+	color: #2c3e50;
 	transition: 0.3s;
+	font-weight: normal;
+	font-size: 1em;
 }
 
 .sairBtn:hover {
 	background-color: #fff;
-	color: rgb(165, 165, 165);
+	color: #2ecc71;
 }

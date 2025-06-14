@@ -127,14 +127,6 @@ function escolherAleatorio(lista) {
 	return lista[Math.floor(Math.random() * lista.length)];
 }
 
-function escolherSemRepetir(lista, usados) {
-	const disponiveis = lista.filter(item => !usados.includes(item));
-	if (disponiveis.length === 0) return null;
-	const escolhido = escolherAleatorio(disponiveis);
-	usados.push(escolhido);
-	return escolhido;
-}
-
 function gerarRefeicoes({ proteinas, vegetais, verduras, carboidratos, frutas, oleaginosas }) {
 	const refeicoes = [];
 	const usados = [];
