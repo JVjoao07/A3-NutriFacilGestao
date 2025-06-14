@@ -77,7 +77,6 @@ function gerarRecomendacoes(objetivo, imc) {
 	return recomendacoes;
 }
 
-
 function gerarPlanoAlimentar(dados) {
 	const {
 		peso,
@@ -159,9 +158,11 @@ function escolherAleatorio(lista) {
 	return lista[Math.floor(Math.random() * lista.length)];
 }
 
-function gerarRefeicoes({ proteinas, vegetais, verduras, carboidratos, frutas, oleaginosas }) {
+function gerarRefeicoes({ proteinas, vegetais, verduras, carboidratos, frutas, oleaginosas }, opcoesPorRefeicao = 2) {
 	const refeicoes = [];
-	const usados = [];
+
+	// Para evitar repetir o mesmo item em múltiplas alternativas dentro da mesma refeição,
+	// vamos resetar o controle por cada opção gerada.
 
 	const alimentosPorRefeicao = {
 		'Café da Manhã': {
@@ -188,54 +189,50 @@ function gerarRefeicoes({ proteinas, vegetais, verduras, carboidratos, frutas, o
 		}
 	};
 
-	function escolherCategoria(categoria, refeicaoNome) {
-		if (!categoria) return null;
-		const permitidos = alimentosPorRefeicao[refeicaoNome][categoria] || [];
-		const disponiveis = permitidos.filter(item => !usados.includes(item));
+	function escolherAleatorioSemRepetir(lista, usados) {
+		const disponiveis = lista.filter(item => !usados.includes(item));
 		if (disponiveis.length === 0) return null;
 		const escolhido = escolherAleatorio(disponiveis);
 		usados.push(escolhido);
 		return escolhido;
 	}
 
-	const cafeProteina = escolherCategoria('proteinas', 'Café da Manhã');
-	const cafeCarbo = escolherCategoria('carboidratos', 'Café da Manhã');
-	const cafeFruta = escolherCategoria('frutas', 'Café da Manhã');
-	const cafeOleaginosas = escolherCategoria('oleaginosas', 'Café da Manhã');
+	function gerarAlternativas(refeicaoNome, categorias) {
+		const alternativas = [];
+		for (let i = 0; i < opcoesPorRefeicao; i++) {
+			const usados = [];
+			const itens = [];
 
-	if (cafeProteina || cafeCarbo || cafeFruta || cafeOleaginosas) {
-		refeicoes.push({
-			refeicao: 'cafe',
-			itens: [cafeProteina, cafeCarbo, cafeFruta, cafeOleaginosas].filter(Boolean)
-		});
+			for (const categoria of categorias) {
+				const lista = alimentosPorRefeicao[refeicaoNome][categoria] || [];
+				const item = escolherAleatorioSemRepetir(lista, usados);
+				if (item) itens.push(item);
+			}
+
+			if (itens.length > 0) alternativas.push(itens);
+		}
+		return alternativas;
 	}
 
-	const almocoProteina = escolherCategoria('proteinas', 'Almoço');
-	const almocoVegetal = escolherCategoria('vegetais', 'Almoço');
-	const almocoCarbo = escolherCategoria('carboidratos', 'Almoço');
-	const almocoAzeite = 'azeite';
+	// Gerar alternativas para cada refeição
+	refeicoes.push({
+		refeicao: 'cafe',
+		itens: gerarAlternativas('Café da Manhã', ['proteinas', 'carboidratos', 'frutas', 'oleaginosas'])
+	});
 
 	refeicoes.push({
 		refeicao: 'almoco',
-		itens: [almocoProteina, almocoVegetal, almocoCarbo, almocoAzeite].filter(Boolean)
+		itens: gerarAlternativas('Almoço', ['proteinas', 'vegetais', 'carboidratos', 'oleaginosas'])
 	});
-
-	const jantarProteina = escolherCategoria('proteinas', 'Jantar');
-	const jantarVerdura = escolherCategoria('verduras', 'Jantar');
-	const jantarCarbo = escolherCategoria('carboidratos', 'Jantar');
-	const jantarAzeite = 'azeite';
 
 	refeicoes.push({
 		refeicao: 'jantar',
-		itens: [jantarProteina, jantarVerdura, jantarCarbo, jantarAzeite].filter(Boolean)
+		itens: gerarAlternativas('Jantar', ['proteinas', 'verduras', 'carboidratos', 'oleaginosas'])
 	});
-
-	const lancheFruta = escolherCategoria('frutas', 'Lanches');
-	const lancheOleaginosas = escolherCategoria('oleaginosas', 'Lanches');
 
 	refeicoes.push({
 		refeicao: 'lanche',
-		itens: [lancheFruta, lancheOleaginosas].filter(Boolean)
+		itens: gerarAlternativas('Lanches', ['frutas', 'oleaginosas'])
 	});
 
 	return refeicoes;

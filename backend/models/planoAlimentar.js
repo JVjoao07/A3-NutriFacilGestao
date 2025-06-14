@@ -6,10 +6,7 @@ const refeicaoSchema = new mongoose.Schema({
 		enum: ['cafe', 'almoco', 'jantar', 'lanche'],
 		required: true
 	},
-	nome: { type: String }, // ex: "Panqueca de Aveia"
-	descricao: { type: String }, // ex: "Ideal para começar o dia com energia"
-	itens: [{ type: String, required: true }],
-	calorias: { type: Number } // somatório dos ingredientes
+	itens: [{ type: [String], required: true }],
 
 }, { _id: false });
 

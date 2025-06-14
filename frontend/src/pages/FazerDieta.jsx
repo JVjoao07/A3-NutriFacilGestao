@@ -210,7 +210,7 @@ function FazerDieta() {
 							<select name="dieta" value={formData.dieta} onChange={handleInputChange} required>
 								<option value="">Selecione a dieta</option>
 								<option value="mediterranea">Mediterrânea</option>
-								<option value="low-carb">Low Carb</option>
+								<option value="lowcarb">Low Carb</option>
 								<option value="cetogenica">Cetogênica</option>
 								<option value="vegetariana">Vegetariana</option>
 							</select>

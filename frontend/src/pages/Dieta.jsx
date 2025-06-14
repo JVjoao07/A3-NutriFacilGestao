@@ -2,7 +2,15 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Dieta.css";
 import Header from "../components/Header";
-import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, } from "recharts";
+import {
+	LineChart,
+	Line,
+	XAxis,
+	YAxis,
+	Tooltip,
+	CartesianGrid,
+	ResponsiveContainer,
+} from "recharts";
 
 // Função para obter ID do usuário a partir do token JWT
 const getUserIdFromToken = (token) => {
@@ -43,7 +51,7 @@ const iconesAlimentos = {
 	pimentão: "🌶️",
 	abobrinha: "🥒",
 	cenoura: "🥕",
-	couveflor: "🥬", // não tem emoji direto, usei alface
+	couveflor: "🥬", // substituição
 
 	// Verduras
 	alface: "🥬",
@@ -79,18 +87,11 @@ const iconesAlimentos = {
 	default: "🍽️",
 };
 
-
-
 // Função para abrir busca no Google com ingredientes da refeição
 function buscarReceitasNoGoogle(itens, refeicao) {
-	// Itens separados por vírgula e espaço
 	const ingredientesFormatados = itens.join(", ");
-
-	// Query com termos fixos para receitas + tipo da refeição + ingredientes
 	const query = encodeURIComponent(`receita ${refeicao} com ${ingredientesFormatados}`);
-
 	const url = `https://www.google.com/search?q=${query}`;
-
 	window.open(url, "_blank");
 }
 
@@ -98,6 +99,7 @@ function Dieta() {
 	const [planoAlimentar, setPlanoAlimentar] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [usuario, setUsuario] = useState(null);
+	const [opcoesAtuais, setOpcoesAtuais] = useState({}); // <-- Estado para controlar a opção exibida
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -149,10 +151,18 @@ function Dieta() {
 
 					const data = await response.json();
 					setPlanoAlimentar(data);
+
+					// Inicializa o estado de opções para cada refeição na opção 0
+					const opcoesIniciais = {};
+					data.refeicoes.forEach(({ refeicao }) => {
+						opcoesIniciais[refeicao] = 0;
+					});
+					setOpcoesAtuais(opcoesIniciais);
+
 				} catch (error) {
 					console.error("Erro ao buscar plano alimentar:", error);
 					setPlanoAlimentar(null);
-					navigate("/fazer-dieta")
+					navigate("/fazer-dieta");
 				} finally {
 					setLoading(false);
 				}
@@ -164,11 +174,10 @@ function Dieta() {
 		if (usuario) {
 			fetchPlanoAlimentar();
 		}
-	}, [usuario]);
+	}, [usuario, navigate]);
 
 	const consumoAguaMl = Number(planoAlimentar?.consumoAguaDiario) || 0;
 
-	// Exemplo estático: consumo igual para os 7 dias da semana
 	const dadosAgua = [
 		{ dia: "Seg", consumo: consumoAguaMl },
 		{ dia: "Ter", consumo: consumoAguaMl },
@@ -202,15 +211,21 @@ function Dieta() {
 			}
 
 			alert("Plano alimentar deletado com sucesso!");
-			setPlanoAlimentar(null); // Limpa o estado do plano
-			navigate("/fazer-dieta")
+			setPlanoAlimentar(null);
+			navigate("/fazer-dieta");
 		} catch (error) {
 			console.error("Erro ao deletar plano alimentar:", error);
 			alert("Ocorreu um erro ao tentar deletar o plano.");
 		}
 	};
 
-	console.log(planoAlimentar)
+	// Função para alternar opção da refeição
+	const alternarOpcao = (refeicao) => {
+		setOpcoesAtuais((prev) => ({
+			...prev,
+			[refeicao]: prev[refeicao] === 0 ? 1 : 0,
+		}));
+	};
 
 	return (
 		<>
@@ -222,19 +237,16 @@ function Dieta() {
 							<h2 className="dieta-title">Sua Dieta {planoAlimentar.dieta}</h2>
 							<div className="dieta-summary">
 								<p>
-									<strong>IMC:</strong> {planoAlimentar.imc} (
-									{planoAlimentar.classificacaoImc})
+									<strong>IMC:</strong> {planoAlimentar.imc} ({planoAlimentar.classificacaoImc})
 								</p>
 								<p>
 									<strong>TMB:</strong> {planoAlimentar.tmb} kcal
 								</p>
 								<p>
-									<strong>Calorias Diárias:</strong> {planoAlimentar.caloriasDiarias}{" "}
-									kcal
+									<strong>Calorias Diárias:</strong> {planoAlimentar.caloriasDiarias} kcal
 								</p>
 								<p>
-									<strong>Consumo de água diário:</strong> {planoAlimentar.consumoAguaDiario}{" "}
-									ml
+									<strong>Consumo de água diário:</strong> {planoAlimentar.consumoAguaDiario} ml
 								</p>
 							</div>
 
@@ -248,12 +260,7 @@ function Dieta() {
 									<XAxis dataKey="dia" />
 									<YAxis />
 									<Tooltip />
-									<Line
-										type="monotone"
-										dataKey="consumo"
-										stroke="#0077b6"
-										strokeWidth={3}
-									/>
+									<Line type="monotone" dataKey="consumo" stroke="#0077b6" strokeWidth={3} />
 								</LineChart>
 							</ResponsiveContainer>
 
@@ -261,31 +268,58 @@ function Dieta() {
 							<div className="refeicoes-container">
 								{planoAlimentar.refeicoes.map(({ refeicao, nome, descricao, itens, calorias }, i) => {
 									const info = refeicaoInfo[refeicao] || {};
+									const opcaoAtual = opcoesAtuais[refeicao] || 0;
+									const itensParaMostrar = itens[opcaoAtual] || [];
+
 									return (
 										<div key={i} className="refeicao-card">
 											<h4 className="refeicao-title">
-												<span className="icone-refeicao" aria-label={refeicao}>
-													{info.icone}
-												</span>{" "}
-												{refeicao.charAt(0).toUpperCase() + refeicao.slice(1)}
-												{nome && ` - ${nome}`}
-												{info.horario && (
-													<span className="horario-refeicao"> ({info.horario})</span>
-												)}
+												<div>
+													<span className="icone-refeicao" aria-label={refeicao}>
+														{info.icone}
+													</span>{" "}
+													{refeicao.charAt(0).toUpperCase() + refeicao.slice(1)}
+													{nome && ` - ${nome}`}
+													{info.horario && (
+														<span className="horario-refeicao"> ({info.horario})</span>
+													)}
+												</div>
+												<div>
+													{/* Botão para alternar opção */}
+													{itens.length > 1 && (
+														<button
+															className="btn-alternar-opcao"
+															onClick={() => alternarOpcao(refeicao)}
+															style={{
+																marginLeft: "10px",
+																padding: "3px 8px",
+																fontSize: "0.8rem",
+																cursor: "pointer",
+															}}
+															aria-label={`Alternar opção da refeição ${refeicao}`}
+														>
+															Opção {opcaoAtual + 1}
+														</button>
+													)}
+												</div>
+
 											</h4>
 											{descricao && <p className="refeicao-desc">{descricao}</p>}
 
 											<ul className="refeicao-itens">
-												{itens.map((item, idx) => {
+												{itensParaMostrar.map((item, idx) => {
 													const icone = iconesAlimentos[item.toLowerCase()] || iconesAlimentos.default;
-													return <li key={idx}>{icone} {item}</li>;
+													return (
+														<li key={idx}>
+															{icone} {item}
+														</li>
+													);
 												})}
-
 											</ul>
 
 											<button
 												className="btn-procurar-receita"
-												onClick={() => buscarReceitasNoGoogle(itens, refeicao)}
+												onClick={() => buscarReceitasNoGoogle(itensParaMostrar, refeicao)}
 											>
 												Procurar Receita
 											</button>
@@ -296,7 +330,6 @@ function Dieta() {
 										</div>
 									);
 								})}
-
 							</div>
 
 							<h3 className="dieta-subtitle">Recomendações</h3>
@@ -316,13 +349,10 @@ function Dieta() {
 							) : (
 								<p>Sem alimentos a evitar.</p>
 							)}
-							<button
-								className="dieta-button deletar-plano"
-								onClick={deletarPlano}
-							>
+
+							<button className="dieta-button deletar-plano" onClick={deletarPlano}>
 								🗑️ Deletar Plano Alimentar
 							</button>
-
 						</div>
 					) : (
 						<p>Você não possui um plano alimentar cadastrado.</p>
@@ -331,10 +361,7 @@ function Dieta() {
 					<div className="dieta-card">
 						<h2 className="dieta-title">Pagamento pendente</h2>
 						<p>Para acessar seu plano alimentar, é necessário concluir o pagamento.</p>
-						<button
-							onClick={() => navigate("/pagamento")}
-							className="dieta-button"
-						>
+						<button onClick={() => navigate("/pagamento")} className="dieta-button">
 							Realizar Pagamento
 						</button>
 					</div>

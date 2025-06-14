@@ -48,6 +48,13 @@
 	font-size: 1.3rem;
 	color: #2a6f97;
 	margin-bottom: 6px;
+
+	display: flex;
+	/* para usar justify-content */
+	align-items: center;
+	/* alinhamento vertical */
+	justify-content: space-between;
+	/* espaço entre título e botão */
 }
 
 .refeicao-desc {
@@ -134,4 +141,21 @@
 
 .btn-procurar-receita:hover {
 	background-color: #005f86;
+}
+
+.btn-alternar-opcao {
+	font-weight: 600;
+	padding: 4px 10px;
+	font-size: 0.85rem;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	user-select: none;
+	margin-left: 10px;
+	vertical-align: middle;
+	max-width: 100px;
+}
+
+.btn-alternar-opcao:hover {
+	color: white;
 }
