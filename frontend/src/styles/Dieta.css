@@ -1,6 +1,6 @@
 .dieta-container {
 	max-width: 900px;
-	margin: 20px auto;
+	margin: 100px auto;
 	padding: 0 20px;
 }
 
@@ -16,6 +16,7 @@
 	margin-bottom: 12px;
 	font-size: 2rem;
 	text-align: center;
+	text-transform: capitalize;
 }
 
 .dieta-summary p {

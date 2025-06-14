@@ -35,6 +35,49 @@ const alimentosPorDieta = {
 	}
 };
 
+const relacoesAlergenos = {
+	soja: ['tofu'],
+	leite: ['queijo', 'iogurte'],
+	lactose: ['queijo', 'iogurte'],
+	gluten: ['pão integral', 'aveia', 'macarrão'],
+	frutos_do_mar: ['camarão', 'atum'],
+	ovo: ['ovo'],
+	amendoim: ['amendoim']
+};
+
+function gerarRecomendacoes(objetivo, imc) {
+	const recomendacoes = [];
+
+	// Regras principais por objetivo
+	if (objetivo === 'emagrecimento') {
+		recomendacoes.push('Manter um déficit calórico moderado, focando em alimentos naturais e integrais.');
+		if (imc >= 25) {
+			recomendacoes.push('Seu IMC indica sobrepeso, então é importante reduzir a ingestão calórica e aumentar a prática de atividades físicas.');
+		}
+	} else if (objetivo === 'hipertrofia') {
+		if (imc >= 25) {
+			recomendacoes.push('Apesar do objetivo de ganho muscular, seu IMC está elevado. Monitore os ganhos com cuidado para evitar aumento excessivo de gordura.');
+			recomendacoes.push('Priorize a ingestão adequada de proteínas e treinos de força.');
+		} else {
+			recomendacoes.push('Para hipertrofia, mantenha um superávit calórico com boa ingestão de proteínas e carboidratos complexos.');
+		}
+	} else if (objetivo === 'manutencao') {
+		recomendacoes.push('Manter uma dieta equilibrada com variedade de alimentos naturais.');
+	} else if (objetivo === 'saude') {
+		recomendacoes.push('Priorizar alimentos naturais e reduzir o consumo de açúcares, processados e gorduras saturadas.');
+	}
+
+	// Recomendações gerais baseadas só no IMC
+	if (imc < 18.5) {
+		recomendacoes.push('Seu IMC indica baixo peso. Considere aumentar a ingestão de calorias e proteínas.');
+	} else if (imc >= 30) {
+		recomendacoes.push('Seu IMC indica obesidade. É essencial buscar acompanhamento nutricional e manter uma rotina ativa.');
+	}
+
+	return recomendacoes;
+}
+
+
 function gerarPlanoAlimentar(dados) {
 	const {
 		peso,
@@ -59,14 +102,27 @@ function gerarPlanoAlimentar(dados) {
 	const permitidos = alimentosPorDieta[dieta];
 	if (!permitidos) throw new Error('Dieta inválida ou não suportada.');
 
-	const filtrar = (lista, categoria) => lista.filter(item => permitidos[categoria].includes(item));
+	// Montar lista de alimentos a evitar
+	const alimentosAEvitar = [...alergias];
+	if (outrasAlergias) alimentosAEvitar.push(outrasAlergias);
 
-	const proteinasFiltradas = filtrar(proteinas, 'proteinas');
-	const vegetaisFiltrados = filtrar(vegetais, 'vegetais');
-	const verdurasFiltradas = filtrar(verduras, 'verduras');
-	const carboidratosFiltrados = filtrar(carboidratos, 'carboidratos');
-	const frutasFiltradas = filtrar(frutas, 'frutas');
-	const oleaginosasFiltradas = filtrar(oleaginosas, 'oleaginosas');
+	// Incluir os alimentos derivados dos alérgenos
+	alergias.forEach(alergia => {
+		if (relacoesAlergenos[alergia]) {
+			alimentosAEvitar.push(...relacoesAlergenos[alergia]);
+		}
+	});
+
+	const filtrarPermitidosSemAlergia = (categoria) => {
+		return (permitidos[categoria] || []).filter(item => !alimentosAEvitar.includes(item));
+	};
+
+	const proteinasFiltradas = filtrarPermitidosSemAlergia('proteinas');
+	const vegetaisFiltrados = filtrarPermitidosSemAlergia('vegetais');
+	const verdurasFiltradas = filtrarPermitidosSemAlergia('verduras');
+	const carboidratosFiltrados = filtrarPermitidosSemAlergia('carboidratos');
+	const frutasFiltradas = filtrarPermitidosSemAlergia('frutas');
+	const oleaginosasFiltradas = filtrarPermitidosSemAlergia('oleaginosas');
 
 	let caloriasDiarias = tmb;
 	if (objetivo === 'emagrecimento') caloriasDiarias -= 500;
@@ -74,6 +130,8 @@ function gerarPlanoAlimentar(dados) {
 	caloriasDiarias = Math.round(caloriasDiarias);
 
 	const consumoAguaDiario = Math.round(peso * 35);
+
+	const recomendacoes = gerarRecomendacoes(objetivo, imc);
 
 	const refeicoes = gerarRefeicoes({
 		proteinas: proteinasFiltradas,
@@ -83,32 +141,6 @@ function gerarPlanoAlimentar(dados) {
 		frutas: frutasFiltradas,
 		oleaginosas: oleaginosasFiltradas
 	});
-
-	const recomendacoes = [];
-
-	switch (objetivo) {
-		case 'emagrecimento':
-			recomendacoes.push('Manter um déficit calórico moderado e evitar alimentos ultraprocessados.');
-			break;
-		case 'hipertrofia':
-			recomendacoes.push('Priorizar a ingestão adequada de proteínas e manter um superávit calórico.');
-			break;
-		case 'manutencao':
-			recomendacoes.push('Manter uma dieta equilibrada, focando em qualidade nutricional.');
-			break;
-		case 'saude':
-			recomendacoes.push('Priorizar alimentos naturais e reduzir o consumo de açúcares e gorduras saturadas.');
-			break;
-	}
-
-	if (imc < 18.5) {
-		recomendacoes.push('Ganhar peso de forma saudável, priorizando proteínas e carboidratos complexos.');
-	} else if (imc >= 25) {
-		recomendacoes.push('Reduzir a ingestão calórica e aumentar a prática de atividades físicas.');
-	}
-
-	const alimentosAEvitar = [...alergias];
-	if (outrasAlergias) alimentosAEvitar.push(outrasAlergias);
 
 	return {
 		dieta,
@@ -166,19 +198,8 @@ function gerarRefeicoes({ proteinas, vegetais, verduras, carboidratos, frutas, o
 		return escolhido;
 	}
 
-	// CAFÉ DA MANHÃ: garantir proteína e carboidrato, frutas e oleaginosas opcionais
-	let cafeProteina = escolherCategoria('proteinas', 'Café da Manhã');
-	let cafeCarbo = escolherCategoria('carboidratos', 'Café da Manhã');
-	// Se faltar proteína ou carboidrato, tentar pegar de frutas ou proteínas adicionais
-	if (!cafeProteina && proteinas.length > 0) cafeProteina = escolherAleatorio(proteinas.filter(p => !usados.includes(p)));
-	if (!cafeCarbo) {
-		const carboAlternativo = frutas.find(f => !usados.includes(f) && (alimentosPorRefeicao['Café da Manhã'].carboidratos.includes(f)));
-		if (carboAlternativo) {
-			cafeCarbo = carboAlternativo;
-			usados.push(cafeCarbo);
-		}
-	}
-
+	const cafeProteina = escolherCategoria('proteinas', 'Café da Manhã');
+	const cafeCarbo = escolherCategoria('carboidratos', 'Café da Manhã');
 	const cafeFruta = escolherCategoria('frutas', 'Café da Manhã');
 	const cafeOleaginosas = escolherCategoria('oleaginosas', 'Café da Manhã');
 
@@ -189,31 +210,28 @@ function gerarRefeicoes({ proteinas, vegetais, verduras, carboidratos, frutas, o
 		});
 	}
 
-	// ALMOÇO: proteína, vegetais, carboidrato e azeite (oleaginosas)
-	let almocoProteina = escolherCategoria('proteinas', 'Almoço');
-	let almocoVegetal = escolherCategoria('vegetais', 'Almoço');
-	let almocoCarbo = escolherCategoria('carboidratos', 'Almoço');
-	let almocoAzeite = 'azeite'; // sempre incluir azeite no almoço
+	const almocoProteina = escolherCategoria('proteinas', 'Almoço');
+	const almocoVegetal = escolherCategoria('vegetais', 'Almoço');
+	const almocoCarbo = escolherCategoria('carboidratos', 'Almoço');
+	const almocoAzeite = 'azeite';
 
 	refeicoes.push({
 		refeicao: 'almoco',
 		itens: [almocoProteina, almocoVegetal, almocoCarbo, almocoAzeite].filter(Boolean)
 	});
 
-	// JANTAR: proteína, verduras, carboidrato, azeite
-	let jantarProteina = escolherCategoria('proteinas', 'Jantar');
-	let jantarVerdura = escolherCategoria('verduras', 'Jantar');
-	let jantarCarbo = escolherCategoria('carboidratos', 'Jantar');
-	let jantarAzeite = 'azeite'; // sempre incluir azeite no jantar
+	const jantarProteina = escolherCategoria('proteinas', 'Jantar');
+	const jantarVerdura = escolherCategoria('verduras', 'Jantar');
+	const jantarCarbo = escolherCategoria('carboidratos', 'Jantar');
+	const jantarAzeite = 'azeite';
 
 	refeicoes.push({
 		refeicao: 'jantar',
 		itens: [jantarProteina, jantarVerdura, jantarCarbo, jantarAzeite].filter(Boolean)
 	});
 
-	// LANCHE: frutas e oleaginosas
-	let lancheFruta = escolherCategoria('frutas', 'Lanches');
-	let lancheOleaginosas = escolherCategoria('oleaginosas', 'Lanches');
+	const lancheFruta = escolherCategoria('frutas', 'Lanches');
+	const lancheOleaginosas = escolherCategoria('oleaginosas', 'Lanches');
 
 	refeicoes.push({
 		refeicao: 'lanche',

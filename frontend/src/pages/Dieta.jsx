@@ -210,6 +210,7 @@ function Dieta() {
 		}
 	};
 
+	console.log(planoAlimentar)
 
 	return (
 		<>
@@ -218,7 +219,7 @@ function Dieta() {
 				{usuario?.statusPagamento === "pago" ? (
 					planoAlimentar ? (
 						<div className="dieta-card">
-							<h2 className="dieta-title">Sua Dieta Mediterrânea</h2>
+							<h2 className="dieta-title">Sua Dieta {planoAlimentar.dieta}</h2>
 							<div className="dieta-summary">
 								<p>
 									<strong>IMC:</strong> {planoAlimentar.imc} (
