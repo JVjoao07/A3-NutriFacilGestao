@@ -48,7 +48,6 @@ const relacoesAlergenos = {
 function gerarRecomendacoes(objetivo, imc) {
 	const recomendacoes = [];
 
-	// Regras principais por objetivo
 	if (objetivo === 'emagrecimento') {
 		recomendacoes.push('Manter um déficit calórico moderado, focando em alimentos naturais e integrais.');
 		if (imc >= 25) {
@@ -67,7 +66,6 @@ function gerarRecomendacoes(objetivo, imc) {
 		recomendacoes.push('Priorizar alimentos naturais e reduzir o consumo de açúcares, processados e gorduras saturadas.');
 	}
 
-	// Recomendações gerais baseadas só no IMC
 	if (imc < 18.5) {
 		recomendacoes.push('Seu IMC indica baixo peso. Considere aumentar a ingestão de calorias e proteínas.');
 	} else if (imc >= 30) {
@@ -90,7 +88,7 @@ function gerarPlanoAlimentar(dados) {
 		verduras = [],
 		carboidratos = [],
 		frutas = [],
-		oleaginosas = ['castanhas', 'nozes', 'amêndoas'],
+		oleaginosas = [],
 		alergias = [],
 		outrasAlergias = ''
 	} = dados;
@@ -101,11 +99,9 @@ function gerarPlanoAlimentar(dados) {
 	const permitidos = alimentosPorDieta[dieta];
 	if (!permitidos) throw new Error('Dieta inválida ou não suportada.');
 
-	// Montar lista de alimentos a evitar
+	// Alimentos a evitar
 	const alimentosAEvitar = [...alergias];
 	if (outrasAlergias) alimentosAEvitar.push(outrasAlergias);
-
-	// Incluir os alimentos derivados dos alérgenos
 	alergias.forEach(alergia => {
 		if (relacoesAlergenos[alergia]) {
 			alimentosAEvitar.push(...relacoesAlergenos[alergia]);
@@ -116,12 +112,13 @@ function gerarPlanoAlimentar(dados) {
 		return (permitidos[categoria] || []).filter(item => !alimentosAEvitar.includes(item));
 	};
 
-	const proteinasFiltradas = filtrarPermitidosSemAlergia('proteinas');
-	const vegetaisFiltrados = filtrarPermitidosSemAlergia('vegetais');
-	const verdurasFiltradas = filtrarPermitidosSemAlergia('verduras');
-	const carboidratosFiltrados = filtrarPermitidosSemAlergia('carboidratos');
-	const frutasFiltradas = filtrarPermitidosSemAlergia('frutas');
-	const oleaginosasFiltradas = filtrarPermitidosSemAlergia('oleaginosas');
+	// Preferir os alimentos enviados pelo usuário, ou usar os filtrados
+	const proteinasFiltradas = proteinas.length > 0 ? proteinas : filtrarPermitidosSemAlergia('proteinas');
+	const vegetaisFiltrados = vegetais.length > 0 ? vegetais : filtrarPermitidosSemAlergia('vegetais');
+	const verdurasFiltradas = verduras.length > 0 ? verduras : filtrarPermitidosSemAlergia('verduras');
+	const carboidratosFiltrados = carboidratos.length > 0 ? carboidratos : filtrarPermitidosSemAlergia('carboidratos');
+	const frutasFiltradas = frutas.length > 0 ? frutas : filtrarPermitidosSemAlergia('frutas');
+	const oleaginosasFiltradas = oleaginosas.length > 0 ? oleaginosas : filtrarPermitidosSemAlergia('oleaginosas');
 
 	let caloriasDiarias = tmb;
 	if (objetivo === 'emagrecimento') caloriasDiarias -= 500;
@@ -129,7 +126,6 @@ function gerarPlanoAlimentar(dados) {
 	caloriasDiarias = Math.round(caloriasDiarias);
 
 	const consumoAguaDiario = Math.round(peso * 35);
-
 	const recomendacoes = gerarRecomendacoes(objetivo, imc);
 
 	const refeicoes = gerarRefeicoes({
@@ -161,9 +157,6 @@ function escolherAleatorio(lista) {
 function gerarRefeicoes({ proteinas, vegetais, verduras, carboidratos, frutas, oleaginosas }, opcoesPorRefeicao = 2) {
 	const refeicoes = [];
 
-	// Para evitar repetir o mesmo item em múltiplas alternativas dentro da mesma refeição,
-	// vamos resetar o controle por cada opção gerada.
-
 	const alimentosPorRefeicao = {
 		'Café da Manhã': {
 			proteinas: ['ovo', 'queijo', 'tofu', 'iogurte'].filter(p => proteinas.includes(p)),
@@ -175,13 +168,13 @@ function gerarRefeicoes({ proteinas, vegetais, verduras, carboidratos, frutas, o
 			proteinas: proteinas,
 			vegetais: vegetais,
 			carboidratos: carboidratos,
-			oleaginosas: ['azeite']
+			oleaginosas: ['azeite'].filter(o => oleaginosas.includes(o))
 		},
 		'Jantar': {
 			proteinas: proteinas,
 			verduras: verduras,
 			carboidratos: carboidratos,
-			oleaginosas: ['azeite']
+			oleaginosas: ['azeite'].filter(o => oleaginosas.includes(o))
 		},
 		'Lanches': {
 			frutas: frutas,
@@ -214,7 +207,6 @@ function gerarRefeicoes({ proteinas, vegetais, verduras, carboidratos, frutas, o
 		return alternativas;
 	}
 
-	// Gerar alternativas para cada refeição
 	refeicoes.push({
 		refeicao: 'cafe',
 		itens: gerarAlternativas('Café da Manhã', ['proteinas', 'carboidratos', 'frutas', 'oleaginosas'])
