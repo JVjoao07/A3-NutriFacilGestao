@@ -24,7 +24,7 @@ function Login() {
 
 			const data = await response.json();
 
-			login(data.accessToken, data.user);
+			login(data.accessToken, data.refreshToken, data.user);
 			navigate('/')
 		} catch (err) {
 			setErro(err.message);

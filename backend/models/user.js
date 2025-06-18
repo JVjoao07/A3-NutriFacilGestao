@@ -4,7 +4,8 @@ const userSchema = new mongoose.Schema({
 	nome: { type: String, required: true },
 	email: { type: String, required: true, unique: true },
 	senha: { type: String, required: true },
-	dieta: { type: mongoose.Schema.Types.ObjectId, ref: 'PlanoAlimentar', required: false }
+	planos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'PlanoAlimentar' }],
+	statusPagamento: { type: String, enum: ['nao-pago', 'pago'], default: 'pago' },
 });
 
 module.exports = mongoose.model('User', userSchema);

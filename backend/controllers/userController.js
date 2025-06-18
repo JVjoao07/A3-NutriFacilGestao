@@ -34,7 +34,7 @@ exports.login = async (req, res) => {
 		if (!valid) return res.status(400).json({ message: 'Senha incorreta!' });
 
 		// Gera access token
-		const accessToken = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '15m' });
+		const accessToken = jwt.sign({ id: user._id, email: user.email }, JWT_SECRET, { expiresIn: '7d' });
 
 		// Gera refresh token
 		const refreshToken = jwt.sign({ id: user._id, email: user.email }, JWT_REFRESH_SECRET, { expiresIn: '7d' });
@@ -90,6 +90,20 @@ exports.getUserWithDieta = async (req, res) => {
 			email: user.email,
 			dieta: user.dieta // aqui vem o objeto do plano alimentar populado
 		});
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+};
+
+exports.getUser = async (req, res) => {
+	const { userId } = req.params;
+	try {
+		const user = await User.findById({ _id: userId }); // Busca pelo campo _id
+		if (!user) {
+			return res.status(404).json({ error: "Usuário não encontrado" });
+		}
+
+		res.json(user);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}

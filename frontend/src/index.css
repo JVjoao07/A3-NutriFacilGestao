@@ -160,7 +160,7 @@ nav {
 .menu a:hover,
 .menu a:focus {
 	color: var(--cor-primaria);
-	background-color: rgba(46, 204, 113, 0.1);
+	/* background-color: rgba(46, 204, 113, 0.1); */
 	outline: none;
 }
 
@@ -377,6 +377,7 @@ nav {
 
 /* Seção de Dietas */
 .dietas {
+	margin-top: 70px;
 	padding: 4rem 1rem;
 }
 

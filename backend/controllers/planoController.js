@@ -1,57 +1,77 @@
-const PlanoAlimentar = require('../models/planoAlimentar');
+const { PlanoAlimentar } = require('../models/planoAlimentar');
 const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+const { gerarPlanoAlimentar } = require('../services/geradorDeReceitas');
+
+exports.getPlanoAlimentar = async (req, res) => {
+	try {
+		const authHeader = req.headers.authorization;
+
+		if (!authHeader) {
+			return res.status(401).json({ mensagem: 'Token não fornecido' });
+		}
+
+		const token = authHeader.split(' ')[1];
+
+		const decoded = jwt.verify(token, process.env.JWT_SECRET);
+		const userId = decoded.id;  // ajuste conforme você define no payload do token
+
+		const plano = await PlanoAlimentar.findOne({ user: userId });
+
+		if (!plano) {
+			return res.status(404).json({ mensagem: 'Nenhum plano alimentar encontrado' });
+		}
+
+		return res.status(200).json(plano);
+	} catch (error) {
+		console.error('Erro ao buscar plano alimentar:', error);
+		return res.status(500).json({ mensagem: 'Erro interno do servidor' });
+	}
+};
 
 exports.criarPlano = async (req, res) => {
-
 	try {
-		const {
-			dieta,
-			imc,
-			classificacaoImc,
-			tmb,
-			caloriasDiarias,
-			consumoAguaDiario,
-			refeicoes,
-			recomendacoes,
-			alimentosAEvitar
-		} = req.body;
-
-		// Validação simples
-		if (!dieta || !imc || !classificacaoImc || !tmb || !caloriasDiarias || !consumoAguaDiario) {
-			return res.status(400).json({ error: 'Campos básicos obrigatórios faltando.' });
-		}
-
-		if (!refeicoes || typeof refeicoes !== 'object') {
-			return res.status(400).json({ error: 'Refeições inválidas ou faltando.' });
-		}
-
-		if (!Array.isArray(recomendacoes) || !Array.isArray(alimentosAEvitar)) {
-			return res.status(400).json({ error: 'Recomendações e alimentos a evitar devem ser arrays.' });
-		}
-
-		// Aqui vem o ID do usuário autenticado, assumindo que middleware setou em req.user.id
+		const planoGerado = gerarPlanoAlimentar(req.body);
 		const userId = req.user.id;
 
-		// Criar novo plano alimentar já associado ao usuário
+		// Criar documento para salvar no banco
 		const plano = new PlanoAlimentar({
-			user: userId, // associando o plano ao usuário
-			dieta,
-			imc,
-			classificacaoImc,
-			tmb,
-			caloriasDiarias,
-			consumoAguaDiario,
-			refeicoes,
-			recomendacoes,
-			alimentosAEvitar
+			user: userId,
+			...planoGerado
 		});
 
 		await plano.save();
-		await User.findByIdAndUpdate(userId, { dieta: plano._id });
 
-		res.status(201).json(plano);
+		// Atualizar o usuário com o ID do novo plano
+		await User.findByIdAndUpdate(userId, { planos: plano._id });
 
+		res.status(200).json(plano);
 	} catch (err) {
-		res.status(500).json({ error: err.message });
+		console.error(err);
+		res.status(500).json({ erro: 'Erro ao gerar plano' });
+	}
+};
+
+exports.deletarPlano = async (req, res) => {
+	try {
+		const userId = req.user.id;
+
+		// Verifica se o plano existe
+		const plano = await PlanoAlimentar.findOne({ user: userId });
+
+		if (!plano) {
+			return res.status(404).json({ mensagem: 'Nenhum plano alimentar encontrado para deletar' });
+		}
+
+		// Remove o plano alimentar
+		await PlanoAlimentar.deleteOne({ user: userId });
+
+		// Atualiza o usuário para remover o vínculo com o plano (caso use o campo `planos`)
+		await User.findByIdAndUpdate(userId, { $unset: { planos: '' } });
+
+		return res.status(200).json({ mensagem: 'Plano alimentar deletado com sucesso' });
+	} catch (error) {
+		console.error('Erro ao deletar plano alimentar:', error);
+		return res.status(500).json({ mensagem: 'Erro interno do servidor' });
 	}
 };
