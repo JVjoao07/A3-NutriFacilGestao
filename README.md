@@ -30,7 +30,7 @@ NutriFácil é uma aplicação web desenvolvida para **criar dietas personalizad
 ### Clonando o projeto
 
 ```bash
-git clone https://github.com/seu-usuario/nutrifacil.git
+git clone https://github.com/JVjoao07/A3-NutriFacilGestao.git
 cd nutrifacil
 ```
 
@@ -51,15 +51,11 @@ npm start
 
 ## 👥 Colaboradores
 
-- [João Victor Alves](#)
-- [Ana Camila](#)
-- [Hugo Almeida](#)
-- [Hebert Boniek de Oliviera Souto](#)
-- [Ítalo Resende](#)
-
-> *(Você pode substituir os `#` pelos links reais dos perfis no GitHub, se quiser.)*
-
----
+- [João Victor Alves]
+- [Ana Camila]
+- [Hugo Almeida]
+- [Hebert Boniek de Oliviera Souto]
+- [Ítalo Resende]
 
 ## 📄 Licença
 
