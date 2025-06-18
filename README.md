@@ -16,8 +16,6 @@ NutriFácil é uma aplicação web desenvolvida para **criar dietas personalizad
 - Recomendação de refeições por período (café, almoço, jantar e lanche)
 - Lista de alimentos a evitar
 - Sugestões nutricionais baseadas nos objetivos do usuário
-- Controle de consumo diário de água e calorias
-- Verificação de status de pagamento (caso necessário)
 
 ## 🧪 Como rodar o projeto localmente
 
