@@ -1,11 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import Dieta from './pages/Dieta';
-import Login from './components/Login';
 import { AuthProvider } from './contexts/AuthContext';
+
+import Login from './components/Login';
 import PrivateRoute from './components/PrivateRoute';
 import Register from './components/Register';
+
+
 import FazerDieta from './pages/FazerDieta';
+import Home from './pages/Home';
+import Dieta from './pages/Dieta';
 
 function App() {
   return (
@@ -18,6 +21,7 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
         </Routes>
       </Router>
     </AuthProvider>
