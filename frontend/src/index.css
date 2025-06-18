@@ -1,0 +1,1295 @@
+:root {
+	--cor-primaria: #2ecc71;
+	--cor-secundaria: #27ae60;
+	--cor-texto: #2c3e50;
+	--cor-fundo: #f8f9fa;
+	--cor-card: #ffffff;
+	--sombra: 0 4px 15px rgba(0, 0, 0, 0.1);
+	--sombra-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
+	--transicao: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	--gradiente-primario: linear-gradient(135deg, var(--cor-primaria), var(--cor-secundaria));
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* Skip Link para acessibilidade */
+.skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background: var(--cor-primaria);
+	color: white;
+	padding: 8px;
+	z-index: 100;
+	transition: var(--transicao);
+}
+
+.skip-link:focus {
+	top: 0;
+}
+
+body {
+	font-family: 'Poppins', sans-serif;
+	line-height: 1.6;
+	color: var(--cor-texto);
+	background-color: var(--cor-fundo);
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 1rem;
+}
+
+/* Header e Navegação */
+header {
+	background-color: var(--cor-card);
+	box-shadow: var(--sombra);
+	position: fixed;
+	width: 100%;
+	top: 0;
+	z-index: 1000;
+}
+
+nav {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 1rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.logo {
+	display: flex;
+	align-items: center;
+}
+
+.logo-svg {
+	width: 180px;
+	height: 45px;
+	transition: transform 0.3s ease;
+}
+
+.logo:hover .logo-svg {
+	transform: scale(1.05);
+}
+
+.logo-leaf {
+	transform-origin: center;
+	animation: leafFloat 3s ease-in-out infinite;
+}
+
+.logo-plate {
+	transform-origin: center;
+	animation: plateRotate 20s linear infinite;
+}
+
+.logo-text {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
+	font-size: 24px;
+	letter-spacing: 0.5px;
+}
+
+@keyframes leafFloat {
+
+	0%,
+	100% {
+		transform: translateY(0) rotate(0deg);
+	}
+
+	50% {
+		transform: translateY(-2px) rotate(2deg);
+	}
+}
+
+@keyframes plateRotate {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Menu */
+.menu {
+	display: flex;
+	list-style: none;
+	gap: 2rem;
+}
+
+/* Ajuste responsivo da logo */
+@media (max-width: 768px) {
+	.logo-svg {
+		width: 140px;
+		height: 35px;
+	}
+
+	.logo-text {
+		font-size: 20px;
+	}
+}
+
+@media (max-width: 480px) {
+	.logo-svg {
+		width: 120px;
+		height: 30px;
+	}
+
+	.logo-text {
+		font-size: 18px;
+	}
+}
+
+.menu a {
+	text-decoration: none;
+	color: var(--cor-texto);
+	font-weight: 500;
+	transition: var(--transicao);
+	padding: 0.5rem;
+	border-radius: 4px;
+}
+
+.menu a:hover,
+.menu a:focus {
+	color: var(--cor-primaria);
+	/* background-color: rgba(46, 204, 113, 0.1); */
+	outline: none;
+}
+
+.menu-mobile {
+	display: none;
+	background: none;
+	border: none;
+	font-size: 1.5rem;
+	cursor: pointer;
+	padding: 0.5rem;
+	border-radius: 4px;
+}
+
+.menu-mobile:hover,
+.menu-mobile:focus {
+	background-color: rgba(46, 204, 113, 0.1);
+	outline: none;
+}
+
+/* Hero Section */
+.hero {
+	height: 100vh;
+	background: url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=1920&auto=format&fit=crop&q=80') center/cover no-repeat;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 0 1rem;
+	margin-top: 60px;
+}
+
+.hero-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(135deg,
+			rgba(46, 204, 113, 0.95),
+			rgba(39, 174, 96, 0.85));
+	z-index: 1;
+}
+
+.hero-content {
+	position: relative;
+	z-index: 2;
+	color: white;
+	max-width: 800px;
+	animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.hero h1 {
+	font-size: 3.5rem;
+	margin-bottom: 1.5rem;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.hero p {
+	font-size: 1.4rem;
+	margin-bottom: 2.5rem;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+	opacity: 0.9;
+}
+
+.hero .btn {
+	background: white;
+	color: var(--cor-primaria);
+	padding: 1.2rem 2.5rem;
+	font-size: 1.2rem;
+	border-radius: 50px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+	transition: all 0.3s ease;
+}
+
+.hero .btn:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+	background: rgba(255, 255, 255, 0.95);
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(30px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Estilos para imagens */
+.hero-image {
+	margin: 2rem auto;
+	max-width: 800px;
+	border-radius: 15px;
+	overflow: hidden;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hero-img {
+	width: 100%;
+	height: auto;
+	display: block;
+	transition: transform 0.3s ease;
+}
+
+.hero-img:hover {
+	transform: scale(1.02);
+}
+
+.dietas-intro {
+	text-align: center;
+	margin-bottom: 3rem;
+}
+
+.dietas-img {
+	width: 100%;
+	max-width: 800px;
+	height: auto;
+	border-radius: 12px;
+	margin-bottom: 1.5rem;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.food-image {
+	margin-bottom: 1rem;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.category-img {
+	width: 100%;
+	height: 150px;
+	object-fit: cover;
+	transition: transform 0.3s ease;
+}
+
+.category-img:hover {
+	transform: scale(1.05);
+}
+
+.sobre-image {
+	margin-bottom: 2rem;
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.sobre-img {
+	width: 100%;
+	height: auto;
+	display: block;
+	transition: transform 0.3s ease;
+}
+
+.sobre-img:hover {
+	transform: scale(1.02);
+}
+
+/* Ajustes responsivos para imagens */
+@media (max-width: 768px) {
+	.hero-image {
+		margin: 1.5rem auto;
+	}
+
+	.dietas-img {
+		margin-bottom: 1rem;
+	}
+
+	.category-img {
+		height: 120px;
+	}
+
+	.sobre-image {
+		margin-bottom: 1.5rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.hero-image {
+		margin: 1rem auto;
+	}
+
+	.category-img {
+		height: 100px;
+	}
+}
+
+/* Botões */
+.btn {
+	display: inline-block;
+	padding: 1rem 2rem;
+	background-color: white;
+	color: var(--cor-primaria);
+	text-decoration: none;
+	border-radius: 50px;
+	font-weight: 600;
+	transition: var(--transicao);
+	border: none;
+	cursor: pointer;
+}
+
+.btn:hover,
+.btn:focus {
+	transform: translateY(-3px);
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+	outline: none;
+}
+
+/* Seção de Dietas */
+.dietas {
+	margin-top: 70px;
+	padding: 4rem 1rem;
+}
+
+.dietas h2 {
+	text-align: center;
+	margin-bottom: 3rem;
+	font-size: 2rem;
+}
+
+.dietas-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 2rem;
+}
+
+.dieta-card {
+	background: var(--cor-card);
+	padding: 2rem;
+	border-radius: 10px;
+	box-shadow: var(--sombra);
+	transition: var(--transicao);
+}
+
+.dieta-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.dieta-card h3 {
+	color: var(--cor-primaria);
+	margin-bottom: 1rem;
+}
+
+.btn-saiba-mais {
+	background-color: var(--cor-primaria);
+	color: white;
+	border: none;
+	padding: 0.8rem 1.5rem;
+	border-radius: 50px;
+	cursor: pointer;
+	font-weight: 500;
+	margin-top: 1rem;
+	transition: var(--transicao);
+}
+
+.btn-saiba-mais:hover,
+.btn-saiba-mais:focus {
+	background-color: var(--cor-secundaria);
+	outline: none;
+}
+
+/* Seção Sobre */
+.sobre {
+	padding: 4rem 1rem;
+	background-color: var(--cor-card);
+}
+
+.sobre h2 {
+	text-align: center;
+	margin-bottom: 3rem;
+	font-size: 2rem;
+}
+
+.sobre-content {
+	display: grid;
+	grid-template-columns: 2fr 1fr;
+	gap: 3rem;
+	align-items: start;
+}
+
+.sobre-texto p {
+	margin-bottom: 1rem;
+}
+
+.sobre-valores h3 {
+	color: var(--cor-primaria);
+	margin-bottom: 1rem;
+}
+
+.sobre-valores ul {
+	list-style-position: inside;
+}
+
+.sobre-valores li {
+	margin-bottom: 0.5rem;
+}
+
+/* Seção Contato */
+.contato {
+	padding: 4rem 1rem;
+}
+
+.contato h2 {
+	text-align: center;
+	margin-bottom: 3rem;
+	font-size: 2rem;
+}
+
+.contato-content {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 3rem;
+	align-items: center;
+}
+
+.contato-image {
+	border-radius: 12px;
+	overflow: hidden;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contato-img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	min-height: 400px;
+	transition: transform 0.3s ease;
+}
+
+.contato-img:hover {
+	transform: scale(1.02);
+}
+
+.contato-form {
+	max-width: none;
+	margin: 0;
+}
+
+.form-group {
+	margin-bottom: 1.5rem;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 0.5rem;
+	font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+	width: 100%;
+	padding: 0.8rem;
+	border: 2px solid #eee;
+	border-radius: 4px;
+	transition: var(--transicao);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+	border-color: var(--cor-primaria);
+	outline: none;
+}
+
+.form-group textarea {
+	height: 150px;
+	resize: vertical;
+}
+
+/* Modal */
+.modal {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1001;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.modal.active {
+	opacity: 1;
+}
+
+.modal-content {
+	background-color: var(--cor-card);
+	margin: 10% auto;
+	padding: 2rem;
+	width: 90%;
+	max-width: 600px;
+	border-radius: 10px;
+	position: relative;
+	transform: translateY(-20px);
+	transition: transform 0.3s ease;
+}
+
+.modal.active .modal-content {
+	transform: translateY(0);
+}
+
+.fechar {
+	position: absolute;
+	right: 1rem;
+	top: 1rem;
+	font-size: 1.5rem;
+	cursor: pointer;
+	background: none;
+	border: none;
+	padding: 0.5rem;
+	border-radius: 4px;
+	transition: var(--transicao);
+}
+
+.fechar:hover,
+.fechar:focus {
+	background-color: rgba(0, 0, 0, 0.1);
+	outline: none;
+}
+
+.modal-detalhes {
+	margin-top: 2rem;
+}
+
+.modal-detalhes h3 {
+	color: var(--cor-primaria);
+	margin: 1rem 0;
+}
+
+.modal-detalhes ul {
+	list-style-position: inside;
+	margin-bottom: 1rem;
+}
+
+/* Footer */
+footer {
+	background-color: var(--cor-card);
+	text-align: center;
+	padding: 2rem 1rem;
+	box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+	position: relative;
+}
+
+.btn-voltar-topo {
+	position: fixed;
+	bottom: 2rem;
+	right: 2rem;
+	background-color: var(--cor-primaria);
+	color: white;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	opacity: 0;
+	visibility: hidden;
+	transition: var(--transicao);
+	box-shadow: var(--sombra);
+}
+
+.btn-voltar-topo.visible {
+	opacity: 1;
+	visibility: visible;
+}
+
+.btn-voltar-topo:hover,
+.btn-voltar-topo:focus {
+	background-color: var(--cor-secundaria);
+	transform: translateY(-3px);
+	outline: none;
+}
+
+/* Estilos do Formulário de Plano Alimentar */
+.plano-form {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 2rem;
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+	margin-bottom: 2rem;
+	padding: 1.5rem;
+	background: #f8f9fa;
+	border-radius: 8px;
+}
+
+.form-section h3 {
+	color: #2c3e50;
+	margin-bottom: 1rem;
+	font-size: 1.2rem;
+}
+
+.form-group {
+	margin-bottom: 1rem;
+}
+
+.form-group label {
+	display: block;
+	margin-bottom: 0.5rem;
+	color: #2c3e50;
+	font-weight: 500;
+}
+
+.form-group input[type="number"],
+.form-group input[type="text"],
+.form-group select {
+	width: 100%;
+	padding: 0.75rem;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 1rem;
+	transition: border-color 0.3s;
+}
+
+.form-group input[type="number"]:focus,
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+	border-color: #4CAF50;
+	outline: none;
+	box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.radio-group,
+.checkbox-group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+.radio-group label,
+.checkbox-group label {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	cursor: pointer;
+	font-weight: normal;
+}
+
+.preferencias-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 1.5rem;
+}
+
+.alergias {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 0.75rem;
+}
+
+.btn-primary {
+	background-color: #4CAF50;
+	color: white;
+	padding: 1rem 2rem;
+	border: none;
+	border-radius: 4px;
+	font-size: 1.1rem;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	width: 100%;
+	margin-top: 1rem;
+}
+
+.btn-primary:hover {
+	background-color: #45a049;
+}
+
+.resultado-plano {
+	margin-top: 2rem;
+	padding: 2rem;
+	background: #fff;
+	border-radius: 10px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.resultado-plano h3 {
+	color: #2c3e50;
+	margin-bottom: 1.5rem;
+	text-align: center;
+}
+
+/* Estilos do Resultado do Plano Alimentar */
+.plano-header {
+	background: #4CAF50;
+	color: white;
+	padding: 1.5rem;
+	border-radius: 8px;
+	margin-bottom: 2rem;
+	text-align: center;
+}
+
+.plano-header h4 {
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+}
+
+.plano-header p {
+	margin: 0.5rem 0;
+	font-size: 1.1rem;
+}
+
+.plano-refeicoes,
+.plano-recomendacoes,
+.plano-alimentos-evitar {
+	background: #fff;
+	padding: 1.5rem;
+	border-radius: 8px;
+	margin-bottom: 1.5rem;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.plano-refeicoes h4,
+.plano-recomendacoes h4,
+.plano-alimentos-evitar h4 {
+	color: #2c3e50;
+	margin-bottom: 1rem;
+	font-size: 1.2rem;
+	border-bottom: 2px solid #4CAF50;
+	padding-bottom: 0.5rem;
+}
+
+.plano-refeicoes ul,
+.plano-recomendacoes ul,
+.plano-alimentos-evitar ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.plano-refeicoes li,
+.plano-recomendacoes li,
+.plano-alimentos-evitar li {
+	padding: 0.75rem 0;
+	border-bottom: 1px solid #eee;
+}
+
+.plano-refeicoes li:last-child,
+.plano-recomendacoes li:last-child,
+.plano-alimentos-evitar li:last-child {
+	border-bottom: none;
+}
+
+.plano-refeicoes strong {
+	color: #4CAF50;
+	margin-right: 0.5rem;
+}
+
+.plano-alimentos-evitar li {
+	color: #e74c3c;
+}
+
+/* Estilos para Preferências Alimentares */
+.section-description {
+	color: #666;
+	margin-bottom: 1.5rem;
+	font-size: 0.95rem;
+}
+
+.food-preferences-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: 1.5rem;
+	margin-top: 1rem;
+}
+
+.food-category-card {
+	background: var(--cor-card);
+	border-radius: 16px;
+	box-shadow: var(--sombra);
+	transition: var(--transicao);
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	overflow: hidden;
+	animation: fadeIn 0.5s ease-out forwards;
+}
+
+.food-category-card:hover {
+	transform: translateY(-5px);
+	box-shadow: var(--sombra-hover);
+}
+
+.card-header {
+	background: var(--gradiente-primario);
+	padding: 1.25rem;
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	border-bottom: none;
+}
+
+.card-header i {
+	font-size: 1.5rem;
+	color: white;
+	background: rgba(255, 255, 255, 0.2);
+	padding: 0.5rem;
+	border-radius: 12px;
+}
+
+.card-header h4 {
+	color: white;
+	font-size: 1.2rem;
+	margin: 0;
+	font-weight: 600;
+}
+
+.card-content {
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.checkbox-label {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	cursor: pointer;
+	padding: 0.5rem;
+	border-radius: 6px;
+	transition: background-color 0.2s ease;
+}
+
+.checkbox-label:hover {
+	background-color: #f8f9fa;
+}
+
+.checkbox-label input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	border: 2px solid #4CAF50;
+	border-radius: 4px;
+	cursor: pointer;
+	position: relative;
+	appearance: none;
+	-webkit-appearance: none;
+	transition: all 0.2s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+	background-color: #4CAF50;
+	border-color: #4CAF50;
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+	content: '✓';
+	position: absolute;
+	color: white;
+	font-size: 12px;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.checkbox-label span {
+	font-size: 0.95rem;
+	color: #444;
+}
+
+/* Estilos específicos para o card de alergias */
+.alergias-card {
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.alergias-card .card-header {
+	background: #fff3f3;
+}
+
+.alergias-card .card-header i {
+	color: #e74c3c;
+}
+
+.alergias-card .checkbox-label:hover {
+	background-color: #fff3f3;
+}
+
+.alergias-card .checkbox-label input[type="checkbox"] {
+	border-color: #e74c3c;
+}
+
+.alergias-card .checkbox-label input[type="checkbox"]:checked {
+	background-color: #e74c3c;
+	border-color: #e74c3c;
+}
+
+.alergias-card .checkbox-label span {
+	color: #444;
+}
+
+/* Ajuste responsivo para o card de alergias */
+@media (max-width: 768px) {
+	.menu {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		width: 100%;
+		background-color: var(--cor-card);
+		padding: 1rem;
+		flex-direction: column;
+		align-items: center;
+		box-shadow: var(--sombra);
+	}
+
+	.menu.active {
+		display: flex;
+	}
+
+	.menu-mobile {
+		display: block;
+	}
+
+	.hero h1 {
+		font-size: 2rem;
+	}
+
+	.hero p {
+		font-size: 1rem;
+	}
+
+	.sobre-content {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.btn-voltar-topo {
+		bottom: 1rem;
+		right: 1rem;
+	}
+
+	.plano-form {
+		padding: 1rem;
+	}
+
+	.form-section {
+		padding: 1rem;
+	}
+
+	.preferencias-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.alergias {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.plano-header {
+		padding: 1rem;
+	}
+
+	.plano-header h4 {
+		font-size: 1.3rem;
+	}
+
+	.plano-header p {
+		font-size: 1rem;
+	}
+
+	.plano-refeicoes,
+	.plano-recomendacoes,
+	.plano-alimentos-evitar {
+		padding: 1rem;
+	}
+
+	.food-preferences-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.card-content {
+		padding: 0.75rem;
+	}
+
+	.checkbox-label {
+		padding: 0.4rem;
+	}
+
+	.alergias-card {
+		max-width: 100%;
+	}
+}
+
+/* Ajustes para os cards de alimentos */
+.food-category-card .card-content {
+	display: flex;
+	flex-direction: column;
+}
+
+.food-image {
+	margin: -1rem -1rem 1rem -1rem;
+	border-radius: 8px 8px 0 0;
+	overflow: hidden;
+	position: relative;
+}
+
+.food-image::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 50px;
+	background: linear-gradient(to top, rgba(0, 0, 0, 0.1), transparent);
+	pointer-events: none;
+}
+
+.category-img {
+	width: 100%;
+	height: 180px;
+	object-fit: cover;
+	transition: transform 0.3s ease;
+}
+
+.food-category-card:hover .category-img {
+	transform: scale(1.05);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 992px) {
+	.contato-content {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+
+	.contato-image {
+		max-width: 600px;
+		margin: 0 auto;
+	}
+
+	.contato-img {
+		min-height: 300px;
+	}
+}
+
+@media (max-width: 768px) {
+	.category-img {
+		height: 150px;
+	}
+
+	.contato-img {
+		min-height: 250px;
+	}
+}
+
+@media (max-width: 480px) {
+	.category-img {
+		height: 120px;
+	}
+
+	.contato-img {
+		min-height: 200px;
+	}
+}
+
+/* Estilos para a tabela de frutas */
+.fruits-table {
+	margin-top: 1.5rem;
+	background: rgba(46, 204, 113, 0.05);
+	border-radius: 12px;
+	padding: 1rem;
+}
+
+.fruits-grid {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0.5rem;
+}
+
+.fruits-grid td {
+	padding: 0.5rem;
+}
+
+.fruits-grid .checkbox-label {
+	background: white;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	margin: 0;
+	border-radius: 8px;
+	transition: var(--transicao);
+}
+
+.fruits-grid .checkbox-label:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para o campo de outras alergias */
+.outras-alergias {
+	margin-top: 1rem;
+	padding-top: 1rem;
+	border-top: 1px solid #eee;
+}
+
+.outras-alergias label {
+	display: block;
+	margin-bottom: 0.5rem;
+	color: #e74c3c;
+	font-weight: 500;
+}
+
+.outras-alergias input {
+	width: 100%;
+	padding: 0.75rem;
+	border: 1px solid #e74c3c;
+	border-radius: 4px;
+	font-size: 0.95rem;
+	transition: all 0.3s ease;
+}
+
+.outras-alergias input:focus {
+	outline: none;
+	border-color: #c0392b;
+	box-shadow: 0 0 0 2px rgba(231, 76, 60, 0.1);
+}
+
+.outras-alergias input::placeholder {
+	color: #999;
+}
+
+/* Ajustes responsivos para a tabela de frutas */
+@media (max-width: 768px) {
+	.fruits-grid td {
+		padding: 0.25rem;
+	}
+
+	.fruits-grid .checkbox-label {
+		padding: 0.4rem;
+	}
+
+	.fruits-grid .checkbox-label span {
+		font-size: 0.9rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.fruits-grid {
+		display: block;
+	}
+
+	.fruits-grid tr {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.5rem;
+	}
+
+	.fruits-grid td {
+		padding: 0.2rem;
+	}
+
+	.fruits-grid .checkbox-label {
+		padding: 0.3rem;
+	}
+
+	.fruits-grid .checkbox-label span {
+		font-size: 0.85rem;
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Ajustes responsivos para o hero */
+@media (max-width: 992px) {
+	.hero h1 {
+		font-size: 3rem;
+	}
+
+	.hero p {
+		font-size: 1.2rem;
+	}
+}
+
+@media (max-width: 768px) {
+	.hero {
+		height: 90vh;
+	}
+
+	.hero h1 {
+		font-size: 2.5rem;
+	}
+
+	.hero p {
+		font-size: 1.1rem;
+		margin-bottom: 2rem;
+	}
+
+	.hero .btn {
+		padding: 1rem 2rem;
+		font-size: 1.1rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.hero {
+		height: 85vh;
+	}
+
+	.hero h1 {
+		font-size: 2rem;
+	}
+
+	.hero p {
+		font-size: 1rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.hero .btn {
+		padding: 0.9rem 1.8rem;
+		font-size: 1rem;
+	}
+}

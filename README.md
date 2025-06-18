@@ -1,72 +1,65 @@
-# NutriFácil - Sistema de Gestão de Dietas e Nutrição
+# 🥗 NutriFácil
 
-## 📋 Descrição
-NutriFácil é um sistema desenvolvido em Java para auxiliar usuários na gestão de suas dietas, cálculo de indicadores de saúde e recomendações alimentares personalizadas.
+NutriFácil é uma aplicação web desenvolvida para **criar dietas personalizadas** com base nas **preferências, características físicas e objetivos do usuário**. O sistema considera dados como peso, altura, idade, gênero, tipo de dieta e hábitos alimentares para gerar planos alimentares adequados e equilibrados.
 
-## 🎯 Funcionalidades Principais
-- Seleção de dietas (Mediterrânea, Low Carb, Cetogênica, Vegetariana)
-- Cálculo de Taxa Metabólica Basal (TMB)
-- Cálculo de Índice de Massa Corporal (IMC)
-- Cálculo de Consumo Diário de Água
-- Recomendações de alimentos por categoria
-- Gestão de restrições alimentares
-- Interface intuitiva e amigável
+## 🚀 Tecnologias Utilizadas
 
-## 🛠️ Tecnologias Utilizadas
-- Java 17
-- JUnit 5 (para testes)
-- Maven (gerenciamento de dependências)
+- **Backend**: Node.js + Express
+- **Frontend**: React.js
+- **Outras ferramentas**: JavaScript, HTML, CSS, Axios, MongoDB
 
-## 📦 Estrutura do Projeto
-```
-nutrifacil/
-├── src/
-│   ├── main/
-│   │   └── java/
-│   │       └── com/
-│   │           └── nutrifacil/
-│   │               ├── model/
-│   │               ├── service/
-│   │               ├── util/
-│   │               └── Main.java
-│   └── test/
-│       └── java/
-│           └── com/
-│               └── nutrifacil/
-│                   └── test/
-├── pom.xml
-└── README.md
-```
+## ⚙️ Funcionalidades
 
-## 🚀 Como Executar
-1. Clone o repositório
-2. Certifique-se de ter o Java 17 instalado
-3. Execute `mvn clean install` para baixar as dependências
-4. Execute `mvn exec:java -Dexec.mainClass="com.nutrifacil.Main"` para iniciar a aplicação
+- Cadastro e login de usuários
+- Cálculo automático de IMC e TMB
+- Geração de plano alimentar personalizado
+- Recomendação de refeições por período (café, almoço, jantar e lanche)
+- Lista de alimentos a evitar
+- Sugestões nutricionais baseadas nos objetivos do usuário
+- Controle de consumo diário de água e calorias
+- Verificação de status de pagamento (caso necessário)
 
-## 🧪 Testes
-O projeto inclui testes unitários e de usabilidade. Para executar os testes:
+## 🧪 Como rodar o projeto localmente
+
+### Pré-requisitos
+
+- Node.js
+- npm ou yarn
+- MongoDB local ou MongoDB Atlas
+
+### Clonando o projeto
+
 ```bash
-mvn test
+git clone https://github.com/JVjoao07/A3-NutriFacilGestao.git
+cd nutrifacil
 ```
 
-## 📊 Métricas de Qualidade
-- Cobertura de testes: >80%
-- Tempo médio de resposta: <2s
-- Usabilidade: Avaliada através de testes com usuários reais
+### Backend
 
-## 👥 Equipe
-JOÃO VICTOR ALVES RA:422142090
-ANA CAMILA
-HUGO ALMEIDA
-HEBERT BONIEK DE OLIVIERA SOUTO RA:422142014
-ITALORESENDE
+```bash
+cd backend
+npm install
+npm start
+```
+### Frontend
 
-## 📅 Cronograma
-- Data de Entrega: 18/06/25
-- Sprint 1: Implementação do core (DD/MM)
-- Sprint 2: Interface e testes (DD/MM)
-- Sprint 3: Refinamentos e documentação (DD/MM)
+```bash
+cd frontend
+npm install
+npm start
+```
 
-## 📝 Licença
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+## 👥 Colaboradores
+
+- [João Victor Alves]
+- [Ana Camila]
+- [Hugo Almeida]
+- [Hebert Boniek de Oliviera Souto]
+- [Ítalo Resende]
+
+## 📄 Licença
+
+Este projeto está licenciado sob a **Licença MIT**.  
+Sinta-se livre para usar, modificar e distribuir este projeto conforme os termos da licença.
+
+[Leia a licença completa aqui.](https://opensource.org/licenses/MIT)

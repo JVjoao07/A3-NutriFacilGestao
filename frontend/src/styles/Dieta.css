@@ -1,0 +1,161 @@
+.dieta-container {
+	max-width: 900px;
+	margin: 100px auto;
+	padding: 0 20px;
+}
+
+.dieta-card {
+	background: #fdf6e3;
+	border-radius: 12px;
+	padding: 20px 30px;
+	box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.dieta-title {
+	color: #2a6f97;
+	margin-bottom: 12px;
+	font-size: 2rem;
+	text-align: center;
+	text-transform: capitalize;
+}
+
+.dieta-summary p {
+	font-weight: 600;
+	margin-bottom: 6px;
+	font-size: 1.1rem;
+}
+
+.refeicoes-container {
+	display: grid;
+	gap: 20px;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	margin-top: 15px;
+}
+
+.refeicao-card {
+	background: #ffffff;
+	border-radius: 8px;
+	padding: 15px 20px;
+	box-shadow: 0 3px 6px rgba(42, 111, 151, 0.15);
+	border: 1px solid #d4d4d4;
+
+	/* Novo: tornar o card um flex container em coluna */
+	display: flex;
+	flex-direction: column;
+}
+
+.refeicao-title {
+	font-size: 1.3rem;
+	color: #2a6f97;
+	margin-bottom: 6px;
+
+	display: flex;
+	/* para usar justify-content */
+	align-items: center;
+	/* alinhamento vertical */
+	justify-content: space-between;
+	/* espaço entre título e botão */
+}
+
+.refeicao-desc {
+	font-size: 0.9rem;
+	font-style: italic;
+	color: #666;
+	margin-bottom: 10px;
+}
+
+.refeicao-itens {
+	list-style-type: none;
+	padding-left: 0;
+	margin-bottom: 8px;
+}
+
+.refeicao-itens li {
+	margin-bottom: 4px;
+	font-size: 1rem;
+	text-transform: capitalize;
+	/* <-- Isso aqui deixa a primeira letra de cada palavra maiúscula */
+}
+
+.refeicao-calorias {
+	font-weight: 600;
+	font-size: 0.95rem;
+	color: #444;
+}
+
+.dieta-subtitle {
+	margin-top: 24px;
+	margin-bottom: 10px;
+	font-size: 1.5rem;
+	color: #2a6f97;
+	border-bottom: 2px solid #2a6f97;
+	padding-bottom: 4px;
+}
+
+.dieta-list {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.dieta-list li {
+	margin-bottom: 8px;
+	font-size: 1.1rem;
+}
+
+.recomendacoes li {
+	color: #d2691e;
+}
+
+.alimentos-a-evitar li {
+	color: #b22222;
+}
+
+.dieta-button {
+	background-color: #2a6f97;
+	border: none;
+	color: white;
+	padding: 12px 20px;
+	border-radius: 8px;
+	cursor: pointer;
+	font-weight: 700;
+	font-size: 1rem;
+	transition: background-color 0.3s ease;
+}
+
+.dieta-button:hover {
+	background-color: #1f4f6a;
+}
+
+.btn-procurar-receita {
+	margin-top: auto;
+	/* Empurra o botão para o fim do container */
+	padding: 6px 12px;
+	background-color: #0077b6;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: 600;
+	transition: background-color 0.3s ease;
+}
+
+.btn-procurar-receita:hover {
+	background-color: #005f86;
+}
+
+.btn-alternar-opcao {
+	font-weight: 600;
+	padding: 4px 10px;
+	font-size: 0.85rem;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	user-select: none;
+	margin-left: 10px;
+	vertical-align: middle;
+	max-width: 100px;
+}
+
+.btn-alternar-opcao:hover {
+	color: white;
+}

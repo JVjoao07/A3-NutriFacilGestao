@@ -1,0 +1,14 @@
+.sairBtn {
+	margin: 0;
+	padding: 0;
+	background-color: #fff;
+	color: #2c3e50;
+	transition: 0.3s;
+	font-weight: normal;
+	font-size: 1em;
+}
+
+.sairBtn:hover {
+	background-color: #fff;
+	color: #2ecc71;
+}
