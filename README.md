@@ -63,4 +63,3 @@ Este projeto está licenciado sob a **Licença MIT**.
 Sinta-se livre para usar, modificar e distribuir este projeto conforme os termos da licença.
 
 [Leia a licença completa aqui.](https://opensource.org/licenses/MIT)
-
